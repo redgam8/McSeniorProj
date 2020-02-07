@@ -1,0 +1,45 @@
+{{>header}}
+
+  <title>TruePool CarPool - Matching</title>
+</head>
+
+<body>
+<div class="container">
+
+<a href="../home"><h1>TruePool CarPool</h1></a>
+<h2>Matching Page</h2>
+<div>
+  <!-- display requested start/end location, reguested time, trip ID -->
+  Click the offer you want to accept
+</div>
+
+<table>
+  <tr><td>Pickup distance, Arrival time</td></tr>
+  <tr><td>Pickup distance, Arrival time</td></tr>
+  <tr><td>Pickup distance, Arrival time</td></tr>
+  <tr><td>Pickup distance, Arrival time</td></tr>
+  <tr><td>Pickup distance, Arrival time</td></tr>
+  <tr><td>Pickup distance, Arrival time</td></tr>
+</table>
+
+<div>
+  <!-- Pickup location, driver info -->
+</div>
+
+<form id="confirm">
+  <input type="button" class="btn btn-success" id="trip-confirm" value="Confirm the trip">
+  <input type="button" class="btn btn-danger" id="trip-not-confirm" value="Choose another trip">
+</form>
+
+</div>
+</body>
+
+<script>
+  $(document).ready(function() {
+    $("#trip-confirm").hide();
+    $("#trip-not-confirm").hide();
+  });
+
+</script>
+
+{{>footer}}
