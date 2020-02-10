@@ -1,0 +1,9 @@
+.container {
+  margin:auto;
+  text-align: center;
+}
+
+#sign-err {
+  text-align: left;
+  margin-left: 10%;
+}

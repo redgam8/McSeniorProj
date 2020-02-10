@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<!-- BootStrap -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <title>TruePool CarPool</title>
+</head>
+
+<body>
+<div class="container">
+
+<a href="../home"><h1>TruePool CarPool</h1></a>
+<h2>Front page</h2>
+<br />
+
+<form id="login-form">
+  <input type="text" class="form-control" id="username" placeholder="Username"/><br />
+  <input type="password" class="form-control" id="password" placeholder="Password"/><br />
+
+  <div id="login-err" role="alert"></div><br />
+
+  <input type="button" class="btn btn-primary" id="login-submit" value="Log In">
+  <br />
+</form>
+
+<form id="signup-form">
+  <h3>Creating an Account</h3>
+  <input type="text" class="form-control" id="username-create" placeholder="Username"/><br />
+  <input type="password" class="form-control" id="password-create" placeholder="Password"/><br />
+  <input type="password" class="form-control" id="password-confirm" placeholder="Password Confirm"/><br />
+  <input type="text" class="form-control" id="name" placeholder="Name"/><br />
+  <input type="email" class="form-control" id="email-address" placeholder="Email Address"/><br />
+
+  <div id="sign-err" role="alert"></div><br />
+
+  <input type="button" class="btn btn-success" id="sign-submit" value="Submit">
+  <input type="reset" class="btn btn-danger" id="login-screen" value="Back"/>
+</form>
+
+<br />
+<input type="button" class="btn btn-primary" id="sign-form-open-button" value="Sign up">
+
+<br />
+<a href="./travel-info.html"><input type="button" class="btn btn-dark" id="riding-test" value="Travel Info Test"></a>
+<a href="./matching.html"><input type="button" class="btn btn-dark" id="riding-test" value="Matching Test"></a>
+
+</div>
+</body>
+
+<script>
+  $(document).ready(() => { $("#signup-form").hide(); });
+
+  var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+  var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  var errMsg="";
+
+  //Hashcode generating tool: "text".hashcode()
+  String.prototype.hashCode = function() {
+    var hash = 0, i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+      chr   = this.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  };
+
+  function formReset(){
+    errMsg="";
+    $("#sign-err").html(errMsg);
+    $("#username-create").removeClass("is-invalid").removeClass("is-valid");
+    $("#password-create").removeClass("is-invalid").removeClass("is-valid");
+    $("#password-confirm").removeClass("is-invalid").removeClass("is-valid");
+    $("#name").removeClass("is-invalid").removeClass("is-valid");
+    $("#email-address").removeClass("is-invalid").removeClass("is-valid");
+  }
+
+  $("#login-submit").click(() => {
+    var username = $("#username-create").val();
+    var password = $("#password-create").val().hashcode();
+    // Send data to server for authentication
+
+  })
+
+  $("#sign-submit").click(() => {
+    formReset();
+    var username = $("#username-create").val();
+    var password = $("#password-create").val();
+    var passwordConfirm = $("#password-confirm").val();
+    var name = $("#name").val();
+    var emailAddress = $("#email-address").val();
+    errMsg=""
+
+    if(username == "" || !username.match(/^[a-zA-z\d]+$/)) {
+      $("#username-create").addClass("is-invalid");
+      errMsg += "● Username error: Only characters and numbers are allowed<br />";
+    }else{ $("#username-create").addClass("is-valid"); }
+
+    if(password == "" || !strongRegex.test(password)) {
+      $("#password-create").addClass("is-invalid");
+      errMsg += "● Password error: Must have at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)<br />";
+    }else{ $("#password-create").addClass("is-valid"); }
+
+    if(passwordConfirm == "" || password != passwordConfirm) {
+      $("#password-confirm").addClass("is-invalid");
+      errMsg += "● Password not match. <br />";
+    }else{ $("#password-confirm").addClass("is-valid"); }
+
+    if(name == "" || !name.match(/^[a-zA-z ]+$/)) {
+      $("#name").addClass("is-invalid");
+      errMsg += "● Name error: Only characters and spaces are allowed<br />";
+    }else{ $("#name").addClass("is-valid"); }
+
+    if(emailAddress == "" || !emailRegex.test(emailAddress)) {
+      $("#email-address").addClass("is-invalid");
+      errMsg += "● Email Address error<br />";
+    }else{ $("#email-address").addClass("is-valid"); }
+
+    if (errMsg == "") {
+    password = password.hashcode();
+    // Send data to the server for duplication check => if not, insert the record to userDb
+
+    }else{ $("#sign-err").html(errMsg); }
+  });
+
+  $("#login-screen").click(() => {
+    $("#login-form").show();
+    $("#signup-form").hide();
+    $("#sign-form-open-button").show();
+    formReset();
+  });
+
+  $("#sign-form-open-button").click(() => {
+    $("#login-form").hide();
+    $("#signup-form").show();
+    $("#sign-form-open-button").hide();
+  });
+
+</script>
+
+<!-- Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</html>
