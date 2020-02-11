@@ -5,34 +5,74 @@ const sqlite3 = require("sqlite3").verbose();
 var userDb = new sqlite3.Database("users.db");
 var routeDb = new sqlite3.Database("route.db");
 
-app.use(express.static(__dirname))
+app.use(express.static(__dirname));
 
-// const session = require('express-session');
-// const mustacheExpress = require('mustache-express');
-// const fs = require('fs');
-//
-// app.engine("mustache", mustacheExpress());
-// app.set('view engine', 'mustache');
-// app.set('views', __dirname + '/views');
-//
-// app.use(express.urlencoded({extended: false}));
-//
-// app.use(session({secret: 'keyboard cat'
-//                 , resave: false
-//                 , saveUninitialized: false}));
-//
-// // app.use(express.static(__dirname));
-//
-// app.use("/home", require("./controllers/home"));
-// app.use("/travel-info", require("./controllers/travel-info"));
-// app.use("/matching", require("./controllers/matching"));
-//
-// app.get("/", function(req, res) {
-//   res.redirect("/home");
+// app.use("/travel-info", function(req,res,next) {
+//   if (req.session.level == "user" || req.session.level == "editor") {
+//     next();
+//   }else{
+//     res.redirect("/")
+//   }
 // });
-//
-// app.get('/', function(req,res) {
-//   res.sendFile(__dirname);
-// });
+
+app.get('/login', function(req, res) {
+
+  var loginCheck = "Login Failed";
+
+  userDb.all("SELECT * FROM Users WHERE username=?", req.query.username,
+    function(err,result) {
+      if(result==""){
+        console.log("fail");
+        res.send(loginCheck);
+      }else{
+        function compare(passwordDb, passwordInput){
+          if (passwordInput == passwordDb) {
+            loginCheck = "Login Success";
+            // req.session.username=req.query.username;
+          };
+          res.send(loginCheck);
+        };
+
+        function hash(callback){
+          var passwordDb = result[0].passwordHash;
+          var passwordInput = require('crypto').createHash('sha256').update(req.query.password).digest("hex");
+          callback(passwordDb, passwordInput);
+        }
+
+        hash(compare);
+      };
+    }
+  );
+});
+
+app.get('/create', function(req, res) {
+
+  var signupCheck = "Sign-up Failed";
+
+  userDb.all("SELECT * FROM Users WHERE username=?", req.query.username,
+    function(err,result) {
+      if(result == ""){
+        function addUser(passwordInput){
+          userDb.run("INSERT INTO Users VALUES (?,?)",
+            [req.query.username, passwordInput], function(err) {
+            // Will put name and email
+              signupCheck = "Success"
+              res.send(signupCheck);
+            }
+          )
+        };
+        function hashSignup(callback){
+          var passwordInput = require('crypto').createHash('sha256').update(req.query.password).digest("hex");
+          callback(passwordInput);
+        }
+        hashSignup(addUser);
+
+      }else{
+        console.log("no error?");
+        res.send(signupCheck);
+      };
+    }
+  );
+});
 
 app.listen(port, () => console.log(`server listening on port ${port}!`));
