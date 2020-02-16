@@ -19,41 +19,43 @@
 
 <body>
   <div class="container">
+    <a href="../"><h1>TruePool CarPool</h1></a>
+    <p>
+      Everthing is evolving so should how we travel. As a driver, we wasted our car seats for nothing. As a rider, we wasted our time to get to a place. Now these are over. You can save the Earth and make money by taking people, or you can relax while somebody drives you to the exact place where you want to be.
+    </p>
+    <p>
+      <strong>Be part of the future.</strong>
+    </p>
+    <hr />
 
-  <a href="../home"><h1>TruePool CarPool</h1></a>
-  <h2>Front page</h2>
-  <br />
+    <form id="login-form">
+      <h2>Sign-in</h2>
+      <input type="text" class="form-control" id="username" placeholder="Username"/><br />
+      <input type="password" class="form-control" id="password" placeholder="Password"/><br />
+      <div id="login-err" role="alert"></div><br />
+      <input type="submit" class="btn btn-primary" id="login-submit" value="Log In">
+      <input type="button" class="btn btn-info" id="sign-form-open-button" value="Sign up">
+      <hr />
+    </form>
 
-  <form id="login-form">
-    <input type="text" class="form-control" id="username" placeholder="Username"/><br />
-    <input type="password" class="form-control" id="password" placeholder="Password"/><br />
+    <form id="signup-form">
+      <h2>Creating an Account</h2>
+      <input type="text" class="form-control" id="username-create" placeholder="Username"/><br />
+      <input type="password" class="form-control" id="password-create" placeholder="Password"/><br />
+      <input type="password" class="form-control" id="password-confirm" placeholder="Password Confirm"/><br />
+      <input type="text" class="form-control" id="name" placeholder="Name"/><br />
+      <input type="email" class="form-control" id="email-address" placeholder="Email Address"/><br />
 
-    <div id="login-err" role="alert"></div><br />
+      <div id="sign-err" role="alert"></div><br />
 
-    <input type="button" class="btn btn-primary" id="login-submit" value="Log In">
+      <input type="submit" class="btn btn-success" id="sign-submit" value="Submit">
+      <input type="reset" class="btn btn-danger" id="login-screen" value="Back"/>
+      <hr />
+    </form>
+
     <br />
-  </form>
-
-  <form id="signup-form">
-    <h3>Creating an Account</h3>
-    <input type="text" class="form-control" id="username-create" placeholder="Username"/><br />
-    <input type="password" class="form-control" id="password-create" placeholder="Password"/><br />
-    <input type="password" class="form-control" id="password-confirm" placeholder="Password Confirm"/><br />
-    <input type="text" class="form-control" id="name" placeholder="Name"/><br />
-    <input type="email" class="form-control" id="email-address" placeholder="Email Address"/><br />
-
-    <div id="sign-err" role="alert"></div><br />
-
-    <input type="button" class="btn btn-success" id="sign-submit" value="Submit">
-    <input type="reset" class="btn btn-danger" id="login-screen" value="Back"/>
-  </form>
-
-  <br />
-  <input type="button" class="btn btn-primary" id="sign-form-open-button" value="Sign up">
-
-  <br />
-  <a href="./travel-info.html"><input type="button" class="btn btn-dark" id="riding-test" value="Travel Info Test"></a>
-  <a href="./matching.html"><input type="button" class="btn btn-dark" id="riding-test" value="Matching Test"></a>
+    <a href="./travel-info.html"><input type="button" class="btn btn-dark" id="riding-test" value="Travel Info Test"></a>
+    <a href="./matching.html"><input type="button" class="btn btn-dark" id="riding-test" value="Matching Test"></a>
 
   </div>
 </body>
@@ -78,7 +80,7 @@
     $("#email-address").removeClass("is-invalid").removeClass("is-valid");
   }
 
-  $("#login-submit").click(() => {
+  $("#login-form").submit(() => {
 
     $("#login-err").html("");
     $("#username").removeClass("is-invalid").removeClass("is-valid");;
@@ -98,9 +100,10 @@
         $("#password").addClass("is-invalid");
       };
     });
+    return false;
   })
 
-  $("#sign-submit").click(() => {
+  $("#signup-form").submit(() => {
     formReset();
     var username = $("#username-create").val();
     var password = $("#password-create").val();
@@ -156,6 +159,7 @@
     }else{
       $("#sign-err").html(errMsg);
     }
+    return false;
   });
 
   $("#login-screen").click(() => {
