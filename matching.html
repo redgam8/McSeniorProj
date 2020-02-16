@@ -21,38 +21,42 @@
 <div class="container">
 
 <a href="../"><h1>TruePool CarPool</h1></a>
+<hr />
 <h2>Matching Page</h2>
-<div>
-  <!-- display requested start/end location, reguested time, trip ID -->
-  Click the offer you want to accept
+<div id="noMatch">
+    <h3>Searching...</h3>
+    <!-- keep changing number of dots at the end to show we are searching.   -->
+    If you want to cancel, please click the button below.
+</div>
+<div id="forRider">
+  <h3>We found a match!</h3>
+  Pickup location:
+  Pickup time:
+  Driver's name:
 </div>
 
-<table>
-  <tr><td>Pickup distance, Arrival time</td></tr>
-  <tr><td>Pickup distance, Arrival time</td></tr>
-  <tr><td>Pickup distance, Arrival time</td></tr>
-  <tr><td>Pickup distance, Arrival time</td></tr>
-  <tr><td>Pickup distance, Arrival time</td></tr>
-  <tr><td>Pickup distance, Arrival time</td></tr>
-</table>
-
-<div>
-  <!-- Pickup location, driver info -->
+<div id="forDriver">
+  <h3>We found a match!</h3>
+  Pickup location:
+  Destination:
+  Rider's name:
 </div>
 
 <form id="confirm">
-  <input type="button" class="btn btn-success" id="trip-confirm" value="Confirm the trip">
-  <input type="button" class="btn btn-danger" id="trip-not-confirm" value="Choose another trip">
+  <input type="button" class="btn btn-success" id="trip-confirm" value="Accept">
+  <a href="./travel-info.html"><input type="button" class="btn btn-danger" id="searchAgain" value="Search again"></a>
+  <!-- This button will go back to the travel info page with the same information the user put -->
 </form>
+<hr />
 
 </div>
 </body>
 
 <script>
-  $(document).ready(function() {
-    $("#trip-confirm").hide();
-    $("#trip-not-confirm").hide();
-  });
+  $("#searchAgain").click(() => {
+    // noMatch: remove posting
+    // Matching: return false to the server
+  })
 
 </script>
 
