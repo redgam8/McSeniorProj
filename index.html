@@ -29,31 +29,30 @@
     <hr />
 
     <form id="login-form">
-      <h2>Sign-in</h2>
+      <h2>Sign in</h2>
       <input type="text" class="form-control" id="username" placeholder="Username"/><br />
       <input type="password" class="form-control" id="password" placeholder="Password"/><br />
-      <div id="login-err" role="alert"></div><br />
-      <input type="submit" class="btn btn-primary" id="login-submit" value="Log In">
-      <input type="button" class="btn btn-info" id="sign-form-open-button" value="Sign up">
+      <p id="login-err" role="alert"></p>
+      <input type="submit" class="btn btn-primary" id="login-submit" value="Sign in"><br /><br />
+      <input type="button" class="btn btn-secondary" id="sign-form-open-button" value="Create an account">
       <hr />
     </form>
 
     <form id="signup-form">
-      <h2>Creating an Account</h2>
-      <input type="text" class="form-control" id="username-create" placeholder="Username"/><br />
-      <input type="password" class="form-control" id="password-create" placeholder="Password"/><br />
+      <h2>Create an account</h2>
+      <input type="text" class="form-control" id="username-create" placeholder="Username"/><div>Only characters and numbers are allowed</div><br />
+      <input type="password" class="form-control" id="password-create" placeholder="Password"/><div>Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)</div><br />
       <input type="password" class="form-control" id="password-confirm" placeholder="Password Confirm"/><br />
-      <input type="text" class="form-control" id="name" placeholder="Name"/><br />
+      <input type="text" class="form-control" id="name" placeholder="Name"/><div>Only characters and spaces are allowed</div><br />
       <input type="email" class="form-control" id="email-address" placeholder="Email Address"/><br />
 
-      <div id="sign-err" role="alert"></div><br />
+      <p id="sign-err" role="alert"></p>
 
       <input type="submit" class="btn btn-success" id="sign-submit" value="Submit">
       <input type="reset" class="btn btn-danger" id="login-screen" value="Back"/>
       <hr />
     </form>
 
-    <br />
     <a href="./travel-info.html"><input type="button" class="btn btn-dark" id="riding-test" value="Travel Info Test"></a>
     <a href="./matching.html"><input type="button" class="btn btn-dark" id="riding-test" value="Matching Test"></a>
 
@@ -119,7 +118,7 @@
 
     if(password == "" || !strongRegex.test(password)) {
       $("#password-create").addClass("is-invalid");
-      errMsg += "● Password error: Must have at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)<br />";
+      errMsg += "● Password error: Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)<br />";
     }else{ $("#password-create").addClass("is-valid"); }
 
     if(passwordConfirm == "" || password != passwordConfirm) {
