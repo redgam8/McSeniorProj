@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>map search test run </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  
+    <script type='text/javascript'>
+    var map;
+
+    function GetMap() {
+        map = new Microsoft.Maps.Map('#myMap', {});
+
+        Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', function () {
+            var locationManager1 = new Microsoft.Maps.AutosuggestManager({ map: map });
+			var locationManager2 = new Microsoft.Maps.AutosuggestManager({ map: map });
+            locationManager1.attachAutosuggest('#startSearchBox', '#startSearchContainer', suggestionSelected);
+			locationManager2.attachAutosuggest('#endSearchBox', '#endSearchContainer', suggestionSelected);
+        });
+    }
+
+   function suggestionSelected(locationSuggestion) {
+   // map.entities.clear();
+    map.setView({ bounds: locationSuggestion.bestView });
+    var pushpin = new Microsoft.Maps.Pushpin(locationSuggestion.location);
+    map.entities.push(pushpin);
+	console.log ("Lat:" +locationSuggestion.location.latitude);
+	console.log ("Long:" +locationSuggestion.location.longitude);
+   }
+    </script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7' async defer></script>
+</head>
+<body>
+<div class="container">
+
+	<div id= "startSearchContainer" class ="form-group">
+	<label for="starLocationSearch">Start Location</label>
+	<input type="text" class= "form-control" id='startSearchBox' placeholder = "Start Location">
+	</div>
+	
+	<div id= "endSearchContainer" class ="form-group">
+	<label for="endLocationSearch">End Location</label>
+	<input type="text" class= "form-control" id='endSearchBox' placeholder = "End Location">
+	</div>
+ 
+	
+	<br>  
+	
+</div>
+
+    <div id="myMap" style="position:relative;width:800px;height:600px;"></div>
+
+    <fieldset style="width:800px;margin-top:10px;">
+        <legend> Map Search use Autosuggest </legend>
+        This map use Bing autosuggest as search function 
+    </fieldset>
+</body>
+</html>
