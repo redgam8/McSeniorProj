@@ -38,7 +38,23 @@
       <hr />
     </form>
 
-    <form id="signup-form">
+    <form id="signup-form" action="/create" method="post">
+      <h2>Create an account</h2>
+      <input type="text" class="form-control" id="username-create" name="username" placeholder="Username"/><div>Only characters and numbers are allowed</div><br />
+      <input type="password" class="form-control" id="password-create" name="password" placeholder="Password"/><div>Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)</div><br />
+      <input type="password" class="form-control" id="password-confirm" name="passwordConfirm" placeholder="Password Confirm"/><br />
+      <input type="text" class="form-control" id="name" name="name" placeholder="Name"/><div>Only characters and spaces are allowed</div><br />
+      <input type="email" class="form-control" id="email-address" name="email" placeholder="Email Address"/><br />
+
+      <p id="sign-err" role="alert"></p>
+
+      <input type="submit" class="btn btn-success" id="sign-submit" value="Submit">
+      <input type="reset" class="btn btn-danger" id="login-screen" value="Back"/>
+      <hr />
+    </form>
+
+    <!-- Original form: Testing POST above-->
+    <!-- <form id="signup-form">
       <h2>Create an account</h2>
       <input type="text" class="form-control" id="username-create" placeholder="Username"/><div>Only characters and numbers are allowed</div><br />
       <input type="password" class="form-control" id="password-create" placeholder="Password"/><div>Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)</div><br />
@@ -51,7 +67,7 @@
       <input type="submit" class="btn btn-success" id="sign-submit" value="Submit">
       <input type="reset" class="btn btn-danger" id="login-screen" value="Back"/>
       <hr />
-    </form>
+    </form> -->
 
     <a href="./travel-info.html"><input type="button" class="btn btn-dark" id="riding-test" value="Travel Info Test"></a>
     <a href="./matching.html"><input type="button" class="btn btn-dark" id="riding-test" value="Matching Test"></a>
@@ -65,8 +81,7 @@
   });
 
   var address="http://localhost:3000";
-  var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-  var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
   var errMsg="";
 
   function formReset(){
@@ -102,64 +117,64 @@
     return false;
   })
 
-  $("#signup-form").submit(() => {
-    formReset();
-    var username = $("#username-create").val();
-    var password = $("#password-create").val();
-    var passwordConfirm = $("#password-confirm").val();
-    var name = $("#name").val();
-    var emailAddress = $("#email-address").val();
-    errMsg=""
-
-    if(username == "" || !username.match(/^[a-zA-z\d]+$/)) {
-      $("#username-create").addClass("is-invalid");
-      errMsg += "● Username error: Only characters and numbers are allowed<br />";
-    }else{ $("#username-create").addClass("is-valid"); }
-
-    if(password == "" || !strongRegex.test(password)) {
-      $("#password-create").addClass("is-invalid");
-      errMsg += "● Password error: Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)<br />";
-    }else{ $("#password-create").addClass("is-valid"); }
-
-    if(passwordConfirm == "" || password != passwordConfirm) {
-      $("#password-confirm").addClass("is-invalid");
-      errMsg += "● Password not match. <br />";
-    }else{ $("#password-confirm").addClass("is-valid"); }
-
-    if(name == "" || !name.match(/^[a-zA-z ]+$/)) {
-      $("#name").addClass("is-invalid");
-      errMsg += "● Name error: Only characters and spaces are allowed<br />";
-    }else{ $("#name").addClass("is-valid"); }
-
-    if(emailAddress == "" || !emailRegex.test(emailAddress)) {
-      $("#email-address").addClass("is-invalid");
-      errMsg += "● Email Address error<br />";
-    }else{ $("#email-address").addClass("is-valid"); }
-
-    if (errMsg == "") {
-      errMsg = "User created! Please sign-in."
-      $.get(address + "/create", {
-        "username": username,
-        "password": password,
-        "name": name,
-        "emailAddress": emailAddress,
-      }, function(signupCheck){
-        if (signupCheck == "Success"){
-          errMsg = "User created!"
-          $("#login-form").show();
-          $("#signup-form").hide();
-          $("#sign-form-open-button").show();
-          $("#login-err").html(errMsg);
-        }else{
-          errMsg = "User duplicated"
-          $("#sign-err").html(errMsg);
-        }
-      })
-    }else{
-      $("#sign-err").html(errMsg);
-    }
-    return false;
-  });
+  // $("#signup-form").submit(() => {
+  //   formReset();
+  //   var username = $("#username-create").val();
+  //   var password = $("#password-create").val();
+  //   var passwordConfirm = $("#password-confirm").val();
+  //   var name = $("#name").val();
+  //   var emailAddress = $("#email-address").val();
+  //   errMsg=""
+  //
+  //   if(username == "" || !username.match(/^[a-zA-z\d]+$/)) {
+  //     $("#username-create").addClass("is-invalid");
+  //     errMsg += "● Username error: Only characters and numbers are allowed<br />";
+  //   }else{ $("#username-create").addClass("is-valid"); }
+  //
+  //   if(password == "" || !strongRegex.test(password)) {
+  //     $("#password-create").addClass("is-invalid");
+  //     errMsg += "● Password error: Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)<br />";
+  //   }else{ $("#password-create").addClass("is-valid"); }
+  //
+  //   if(passwordConfirm == "" || password != passwordConfirm) {
+  //     $("#password-confirm").addClass("is-invalid");
+  //     errMsg += "● Password not match. <br />";
+  //   }else{ $("#password-confirm").addClass("is-valid"); }
+  //
+  //   if(name == "" || !name.match(/^[a-zA-z ]+$/)) {
+  //     $("#name").addClass("is-invalid");
+  //     errMsg += "● Name error: Only characters and spaces are allowed<br />";
+  //   }else{ $("#name").addClass("is-valid"); }
+  //
+  //   if(emailAddress == "" || !emailRegex.test(emailAddress)) {
+  //     $("#email-address").addClass("is-invalid");
+  //     errMsg += "● Email Address error<br />";
+  //   }else{ $("#email-address").addClass("is-valid"); }
+  //
+  //   if (errMsg == "") {
+  //     errMsg = "User created! Please sign-in."
+  //     $.get(address + "/create", {
+  //       "username": username,
+  //       "password": password,
+  //       "name": name,
+  //       "emailAddress": emailAddress,
+  //     }, function(signupCheck){
+  //       if (signupCheck == "Success"){
+  //         errMsg = "User created!"
+  //         $("#login-form").show();
+  //         $("#signup-form").hide();
+  //         $("#sign-form-open-button").show();
+  //         $("#login-err").html(errMsg);
+  //       }else{
+  //         errMsg = "User duplicated"
+  //         $("#sign-err").html(errMsg);
+  //       }
+  //     })
+  //   }else{
+  //     $("#sign-err").html(errMsg);
+  //   }
+  //   return false;
+  // });
 
   $("#login-screen").click(() => {
     $("#login-form").show();
