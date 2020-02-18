@@ -25,7 +25,7 @@ var log = function(req,res,next) {
 app.use(log);
 
 app.use("/", function(req,res,next) {
-  if (req.session.username) res.redirect("/travel-info");
+  if (req.session.login) res.redirect("/travel-info");
   else next();
 });
 
@@ -64,8 +64,10 @@ app.post('/create', function(req, res) {
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
   var passwordConfirmInput = req.body.passwordConfirm;
+  var name = req.body.name;
+  var email = req.body.email;
 
-  var errMsg = "";
+  req.session.errMsg = "";
 
   var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
   var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -88,77 +90,55 @@ app.post('/create', function(req, res) {
   if(passwordConfirmInput == "" || passwordInput != passwordConfirmInput) {
     req.session.passwordConfirmErr = true;
     errMsg += "● Password not match. <br />";
-  }else{ $("#password-confirm").addClass("is-valid"); }
+  }else{
+    req.session.passwordConfirmErr = false;
+  }
 
   if(name == "" || !name.match(/^[a-zA-z ]+$/)) {
-    $("#name").addClass("is-invalid");
+    req.session.nameErr = true;
     errMsg += "● Name error: Only characters and spaces are allowed<br />";
-  }else{ $("#name").addClass("is-valid"); }
+  }else{
+    req.session.nameErr = false;
+  }
 
   if(emailAddress == "" || !emailRegex.test(emailAddress)) {
-    $("#email-address").addClass("is-invalid");
+    req.session.emailErr = true;
     errMsg += "● Email Address error<br />";
-  }else{ $("#email-address").addClass("is-valid"); }
+  }else{
+    req.session.emailErr = false;
+  }
 
+  if (errMsg == "") {
+    console.log("Input verficiation passed.");
 
-  // Form Adding
-  userDb.all("SELECT * FROM Users WHERE username=?", usernameInput,
-    function(err,result) {
-      if(result == ""){
-        function addUser(passwordInput){
-          userDb.run("INSERT INTO Users VALUES (?,?)",
-            [usernameInput, passwordInputHash], function(err) {
-            // Will put name and email
-              req.session.signupSuccess = true;
-            }
-          )
+    userDb.all("SELECT * FROM Users WHERE username=?", usernameInput,
+      function(err,result) {
+        if(result == ""){
+          function addUser(passwordInput){
+            userDb.run("INSERT INTO Users VALUES (?,?)",
+              [usernameInput, passwordInputHash], function(err) {
+              // Will put name and email
+                req.session.signupSuccess = true;
+              }
+            )
+          };
+          function hashSignup(callback){
+            passwordInputHash = require('crypto').createHash('sha256').update(req.body.password).digest("hex");
+            callback(passwordInputHash);
+          }
+          hashSignup(addUser);
+
+        }else{
+          req.session.signupErrMsg = "Existed Account";
+          console.log("Error: "+req.session.signupErrMsg);
+          req.session.signupSuccess = false;
         };
-        function hashSignup(callback){
-          passwordInputHash = require('crypto').createHash('sha256').update(req.body.password).digest("hex");
-          callback(passwordInputHash);
-        }
-        hashSignup(addUser);
-
-      }else{
-        req.session.signupErrMsg = "Existed Account";
-        console.log("Error: "+req.session.signupErrMsg);
-        req.session.signupSuccess = false;
-      };
-    }
-  );
+    });
+  }else{
+    console.log("Input verficiation failed.");
+  };
 
   res.redirect("/");
 });
-
-// Original form: Testing POST above
-// app.get('/create', function(req, res) {
-//
-//   var signupCheck = "Sign-up Failed";
-//
-//   userDb.all("SELECT * FROM Users WHERE username=?", req.query.username,
-//     function(err,result) {
-//       if(result == ""){
-//         function addUser(passwordInput){
-//           userDb.run("INSERT INTO Users VALUES (?,?)",
-//             [req.query.username, passwordInput], function(err) {
-//             // Will put name and email
-//               signupCheck = "Success"
-//               res.send(signupCheck);
-//             }
-//           )
-//         };
-//         function hashSignup(callback){
-//           var passwordInput = require('crypto').createHash('sha256').update(req.query.password).digest("hex");
-//           callback(passwordInput);
-//         }
-//         hashSignup(addUser);
-//
-//       }else{
-//         console.log("no error?");
-//         res.send(signupCheck);
-//       };
-//     }
-//   );
-// });
 
 app.listen(port, () => console.log(`server listening on port ${port}!`));
