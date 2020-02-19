@@ -19,7 +19,7 @@
 
 <body>
   <div class="container">
-    <a href="../"><h1>TruePool CarPool</h1></a>
+    <a href="../"><img src="logo.gif" /></a>
     <p>
       Everthing is evolving so should how we travel. As a driver, we wasted our car seats for nothing. As a rider, we wasted our time to get to a place. Now these are over. You can save the Earth and make money by taking people, or you can relax while somebody drives you to the exact place where you want to be.
     </p>
@@ -28,23 +28,24 @@
     </p>
     <hr />
 
-    <form id="login-form">
+    <form id="login-form" onSubmit="return loginCheck()" action="/" method="post">
       <h2>Sign in</h2>
-      <input type="text" class="form-control" id="username" placeholder="Username"/><br />
-      <input type="password" class="form-control" id="password" placeholder="Password"/><br />
+      <input type="text" class="form-control" id="username" placeholder="Username" name="username" required autofocus pattern="[a-z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />
+      <input type="password" class="form-control" id="password" placeholder="Password" name="password" required />
+      <br />
       <p id="login-err" role="alert"></p>
       <input type="submit" class="btn btn-primary" id="login-submit" value="Sign in"><br /><br />
       <input type="button" class="btn btn-secondary" id="sign-form-open-button" value="Create an account">
       <hr />
     </form>
 
-    <form id="signup-form" action="/create" method="post">
+    <form id="signup-form" action="/create" method="post" onSubmit="return signupCheck()">
       <h2>Create an account</h2>
-      <input type="text" class="form-control" id="username-create" name="username" placeholder="Username"/><div>Only characters and numbers are allowed</div><br />
-      <input type="password" class="form-control" id="password-create" name="password" placeholder="Password"/><div>Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)</div><br />
-      <input type="password" class="form-control" id="password-confirm" name="passwordConfirm" placeholder="Password Confirm"/><br />
-      <input type="text" class="form-control" id="name" name="name" placeholder="Name"/><div>Only characters and spaces are allowed</div><br />
-      <input type="email" class="form-control" id="email-address" name="email" placeholder="Email Address"/><br />
+      <input type="text" class="form-control" id="username-create" name="username" placeholder="Username" required pattern="[a-z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />
+      <input type="password" class="form-control" id="password-create" name="password" placeholder="Password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Minimum 8 characters long. At least 1 uppercase, 1 lowercase, and 1 number"/><br />
+      <input type="password" class="form-control" id="password-confirm" name="passwordConfirm" placeholder="Password Confirm" required/><br />
+      <input type="text" class="form-control" id="name" name="name" placeholder="Name" required pattern="[A-Za-z ]{0,}" title="Only characters and spaces are allowed"/><br />
+      <input type="email" class="form-control" id="email-address" name="email" placeholder="Email Address" required/><br />
 
       <p id="sign-err" role="alert"></p>
 
@@ -53,111 +54,45 @@
       <hr />
     </form>
 
-    <!-- Original form: Testing POST above-->
-    <!-- <form id="signup-form">
-      <h2>Create an account</h2>
-      <input type="text" class="form-control" id="username-create" placeholder="Username"/><div>Only characters and numbers are allowed</div><br />
-      <input type="password" class="form-control" id="password-create" placeholder="Password"/><div>Minimum 8 characters long. At least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!, @, #, $, %, ^, &, *)</div><br />
-      <input type="password" class="form-control" id="password-confirm" placeholder="Password Confirm"/><br />
-      <input type="text" class="form-control" id="name" placeholder="Name"/><div>Only characters and spaces are allowed</div><br />
-      <input type="email" class="form-control" id="email-address" placeholder="Email Address"/><br />
-
-      <p id="sign-err" role="alert"></p>
-
-      <input type="submit" class="btn btn-success" id="sign-submit" value="Submit">
-      <input type="reset" class="btn btn-danger" id="login-screen" value="Back"/>
-      <hr />
-    </form> -->
-
-    <a href="./travel-info.html"><input type="button" class="btn btn-dark" id="riding-test" value="Travel Info Test"></a>
+    <a href="./travel-info"><input type="button" class="btn btn-dark" id="riding-test" value="Travel Info Test"></a>
     <a href="./matching.html"><input type="button" class="btn btn-dark" id="riding-test" value="Matching Test"></a>
 
   </div>
 </body>
 
 <script>
+  var address = "http://localhost:3000/"
+
   $(document).ready(() => {
     $("#signup-form").hide();
   });
 
-  var address="http://localhost:3000";
-
-  var errMsg="";
-
-  function formReset(){
-    errMsg="";
-    $("#sign-err").html(errMsg);
-    $("#username-create").removeClass("is-invalid").removeClass("is-valid");
-    $("#password-create").removeClass("is-invalid").removeClass("is-valid");
-    $("#password-confirm").removeClass("is-invalid").removeClass("is-valid");
-    $("#name").removeClass("is-invalid").removeClass("is-valid");
-    $("#email-address").removeClass("is-invalid").removeClass("is-valid");
-  }
-
-  $("#login-form").submit(() => {
-
-    $("#login-err").html("");
-    $("#username").removeClass("is-invalid").removeClass("is-valid");;
-    $("#password").removeClass("is-invalid").removeClass("is-valid");;
-
-    $.get(address + "/login", {
-      "username": $("#username").val(),
-      "password": $("#password").val()
-
-    }, function(loginCheck){
-      console.log("loginCheck:"+loginCheck);
-      if(loginCheck == "Login Success") {
-        window.location.href="./travel-info.html"
-      }else{
-        $("#login-err").html("Username and Password not match.");
-        $("#username").addClass("is-invalid");
-        $("#password").addClass("is-invalid");
-      };
-    });
-    return false;
-  })
-
-  // $("#signup-form").submit(() => {
-  //   formReset();
-  //   
-  //   if (errMsg == "") {
-  //     errMsg = "User created! Please sign-in."
-  //     $.get(address + "/create", {
-  //       "username": username,
-  //       "password": password,
-  //       "name": name,
-  //       "emailAddress": emailAddress,
-  //     }, function(signupCheck){
-  //       if (signupCheck == "Success"){
-  //         errMsg = "User created!"
-  //         $("#login-form").show();
-  //         $("#signup-form").hide();
-  //         $("#sign-form-open-button").show();
-  //         $("#login-err").html(errMsg);
-  //       }else{
-  //         errMsg = "User duplicated"
-  //         $("#sign-err").html(errMsg);
-  //       }
-  //     })
-  //   }else{
-  //     $("#sign-err").html(errMsg);
-  //   }
-  //   return false;
-  // });
-
   $("#login-screen").click(() => {
-    $("#login-form").show();
     $("#signup-form").hide();
+    $("#login-form").show();
     $("#sign-form-open-button").show();
-    formReset();
   });
 
   $("#sign-form-open-button").click(() => {
     $("#login-form").hide();
-    $("#signup-form").show();
     $("#sign-form-open-button").hide();
+    $("#signup-form").show();
   });
 
+  function loginCheck(){
+    var pass = false;
+    $.post(address + "login", {
+      "username": $("#username").val(),
+      "password": $("#password").val()
+    }, function(data){
+      alert(data);
+    });
+  };
+
+
+  function signupCheck(){
+
+  }
 </script>
 
 <!-- Bootstrap -->
