@@ -1,12 +1,10 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- CSS -->
-  <link rel="stylesheet" type="text/css" href="style.css">
 
   <!-- BootStrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -14,158 +12,139 @@
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<style>
-* {
-  box-sizing: border-box;
-}
+  <style>
+    /* * {
+      box-sizing: border-box;
+    } */
 
-body {
-  font-family: Roboto, verdana ;
-}
+    body {
+      font-family: Roboto, verdana;
+      margin: auto;
+      text-align: center;
+    }
 
-/* Header/Blog Title */
-.header {
-  /* padding: 30px; */
-  text-align: center;
-  /* background: white; */
-}
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+    }
 
-.header h1 {
-  font-size: 50px;
-}
+    .topnav a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
 
-/* Style the top navigation bar */
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
 
-/* Style the topnav links */
-.topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
+    /* Class for currently selected navigation item  */
+    .curnav {
+      background-color: #777;
+    }
 
-/* Change color on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
+    .leftcolumn {
+      width: 60%;
+      margin: auto;
+    }
 
-/* Class for currently selected navigation item  */
-.curnav {
-  background-color: #777;
-}
+    .card {
+      background-color: white;
+      padding: 20px;
+      margin-top: 20px;
+    }
 
-/* Create two unequal columns that floats next to each other */
-/* Left column */
-.leftcolumn {
-  margin: auto;
-}
+    /* Clear floats after the columns */
+    /* .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    } */
 
-/* Right column */
-/* .rightcolumn {
-  float: left;
-  width: 25%;
-  background-color: #f1f1f1;
-  padding-left: 20px;
-} */
+    /* Footer */
+    /* .footer {
+      padding: 20px;
+      text-align: center;
+      background: #ddd;
+      margin-top: 20px;
+    } */
 
-/* Fake image */
-.fakeimg {
-  background-color: #aaa;
-  width: 100%;
-  padding: 20px;
-}
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-/* Add a card effect for articles */
-.card {
-  background-color: white;
-  padding: 20px;
-  margin-top: 20px;
-}
+    th,
+    td {
+      text-align: left;
+      padding: 8px;
+    }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+    tr:nth-child(even) {
+      background-color: #f2f2f2
+    }
 
-/* Footer */
-.footer {
-  padding: 20px;
-  text-align: center;
-  background: #ddd;
-  margin-top: 20px;
-}
+    th {
+      background-color: #333;
+      color: white;
+    }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
+    @media screen and (max-width: 800px) {
+      .leftcolumn {
+        width: 100%;
+        padding: 0;
+      }
 
-th, td {
-  text-align: left;
-  padding: 8px;
-}
+      #logo {
+        width: 90%;
+      }
+    }
 
-tr:nth-child(even){background-color: #f2f2f2}
+    @media screen and (max-width: 400px) {
+      .topnav a {
+        float: none;
+        width: 100%;
+      }
+    }
 
-th {
-  background-color: #333;
-  color: white;
-}
+    input[type=radio] {
+      display: none;
+    }
 
-/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 800px) {
-  .leftcolumn, .rightcolumn {
-    width: 100%;
-    padding: 0;
-  }
-}
+    input[type=radio]+img {
+      opacity: 0.4;
+    }
 
-/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-@media screen and (max-width: 400px) {
-  .topnav a {
-    float: none;
-    width: 100%;
-  }
-}
+    input[type=radio]+img:hover {
+      opacity: 0.6;
+      cursor: pointer;
+    }
 
-input[type=radio] {
-  display: none;
-}
+    input[type=radio]+img:active {
+      opacity: 0.4;
+      cursor: pointer;
+    }
 
-input[type=radio] + img {
-  opacity: 0.4;
-  /* border: 1px solid black; */
-}
+    input[type=radio]:checked+img {
+      border-radius: 25px;
+      border: 2px solid green;
+      opacity: 1.0;
+    }
 
-input[type=radio] + img:hover {
-  opacity: 0.6;
-  cursor: pointer;
-}
+    input[type=text]:valid, input[type=password]:valid, input[type=email]:valid {
+      border: 2px solid green;
+    }
 
-input[type=radio] + img:active {
-  opacity: 0.4;
-  cursor: pointer;
-}
-
-input[type=radio]:checked + img {
-  border: 2px solid black;
-  opacity: 1.0;
-}
-
-</style>
-<title>Truepool Carpool</title>
+  </style>
+  <title>Truepool Carpool</title>
 </head>
+
 <body>
 
-<div class="header">
-  <a href="/home"><img src="./views/logo.gif" /></a>
-</div>
+  <div class="header">
+    <a href="/home"><img id="logo" src="./views/logo.gif" /></a>
+  </div>
