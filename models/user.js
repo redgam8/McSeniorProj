@@ -19,14 +19,14 @@ function createArticle(article,username,callback)
          });
 }
 
-function createUser(username,password)
+function createUser(username,password, name, email, role)
 {
-  db.run("INSERT INTO Users VALUES (?,?,'member')",
-         [username, password],
-       
-         function(err) { 
-		 //callback(); 
-		 });
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?)",
+         [username, password, name, email, role],
+         function(err) {
+           // callback();
+         }
+       );
 }
 
 
@@ -42,4 +42,3 @@ function deleteContent(type,id,callback)
          function(err) { callback(); });
 }
 module.exports = {getUsers,createArticle,createUser,getAllUsers,deleteContent};
-

@@ -5,16 +5,18 @@
 <div class="row">
   <div class="leftcolumn">
     <div class="card">
+      <div>
+        Driver test: mem1 / password
+        Rider test: mem2 / password
+      </div>
       <h2>Login</h2>
-      <p>New user? <a href="signup"> Sign-up</a> for an account!</p>
-      <p>Enter your username and password below to login.</p>
       <p style="color:red;">{{ login_error }}</p>
       <form action="/login/attemptlogin" method="post">
-        <label for="username">Username:</label>
-        <input type="text" name="username"> <br /> <br />
-        <label for="password">Password:</label>
-        <input type="text" name="password"> <br /> <br />
-        <input type="submit" value="Login">
+        <input type="text" class="form-control" placeholder="Username" name="username" required autofocus autocomplete="on" pattern="[a-z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />
+        <input type="password" class="form-control" placeholder="Password" name="password" required />
+        <br />
+        <input type="submit" class="btn btn-primary" value="Sign in"><br /><br />
+        <a href="signup"><input type="button" class="btn btn-secondary" value="Create an account"></a>
       </form> <br />
     </div>
   </div>

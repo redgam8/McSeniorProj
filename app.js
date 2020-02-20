@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const port = 3000;
 const mustacheExpress = require('mustache-express');
 const fs = require('fs');
+
 // Include the mustache engine to help us render our pages
 app.engine("mustache", mustacheExpress());
 app.set('view engine', 'mustache');
@@ -37,12 +39,12 @@ app.use(function(req,res,next) {
 // we are learning middlewares for the first time).
 function timeLogger(req, res, next)
 {
-	datatoappend =  Date() + ',' + req.path + ',' + req.ip  + ',' + JSON.stringify(req.query)  + ',' + JSON.stringify(req.body) + "\n" ;
-	fs.appendFile("log.txt", datatoappend, (err) => { if (err) throw err;});
+	datatoappend =  Date() + ',' + req.path + ',' + req.ip  + ', query:' + JSON.stringify(req.query)  + ', body:' + JSON.stringify(req.body) + "\n" ;
+	// fs.appendFile("log.txt", datatoappend, (err) => { if (err) throw err;});
 	next();
-
 }
 app.use(timeLogger);
+
 app.use("/home",
         function(req,res,next) { req.TPL.homenav = true; next(); });
 app.use("/articles",
@@ -122,4 +124,4 @@ app.get(/^(.+)$/, function(req,res) {
 });
 
 // Start the server
-var server = app.listen(3000, function() {console.log("Server listening...");})
+var server = app.listen(port, function() {console.log("Server listening...");})
