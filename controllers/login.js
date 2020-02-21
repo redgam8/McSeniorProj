@@ -19,7 +19,7 @@ router.post("/attemptlogin", function(req, res) {
       function compare(passwordInputHash){
         if (passwordInputHash == array2[0].passwordHash) {
             req.session.username = req.body.username;
-            res.redirect("/members");
+            res.redirect("/travel");
         }else{
           req.session.login_error = "Invalid password!";
           res.redirect("/login");

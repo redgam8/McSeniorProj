@@ -5,7 +5,7 @@ const ArticlesModel = require('../models/articles.js');
 // Display the members page
 router.get("/", function(req, res)
 {
-  res.render("members", req.TPL);
+  res.render("travel", req.TPL);
 });
 
 // Create an article if the form has been submitted
@@ -29,5 +29,3 @@ router.post("/create", function(req, res)
 });
 
 module.exports = router;
-
-

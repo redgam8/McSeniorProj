@@ -45,22 +45,22 @@ function timeLogger(req, res, next)
 }
 app.use(timeLogger);
 
-app.use("/home",
-        function(req,res,next) { req.TPL.homenav = true; next(); });
-app.use("/articles",
-        function(req,res,next) { req.TPL.articlesnav = true; next(); });
-app.use("/members",
-        function(req,res,next) { req.TPL.membersnav = true; next(); });
-app.use("/editors",
-        function(req,res,next) { req.TPL.editorsnav = true; next(); });
-app.use("/login",
-        function(req,res,next) { req.TPL.loginnav = true; next(); });
-app.use("/signup",
-        function(req,res,next) { req.TPL.loginnav = true; next(); });
+// app.use("/home",
+//         function(req,res,next) { req.TPL.homenav = true; next(); });
+// app.use("/articles",
+//         function(req,res,next) { req.TPL.articlesnav = true; next(); });
+// app.use("/members",
+//         function(req,res,next) { req.TPL.membersnav = true; next(); });
+// app.use("/editors",
+//         function(req,res,next) { req.TPL.editorsnav = true; next(); });
+// app.use("/login",
+//         function(req,res,next) { req.TPL.loginnav = true; next(); });
+// app.use("/signup",
+//         function(req,res,next) { req.TPL.loginnav = true; next(); });
 
 // protect access to the members page, re-direct user to home page if nobody
 // is logged in...
-app.use("/members", function(req,res,next) {
+app.use("/travel", function(req,res,next) {
 
   if (req.session.username) next();
   else res.redirect("/login");
@@ -103,9 +103,9 @@ app.use("/editors", function(req,res,next) {
 // then repeating /controllername for each route defined in the file (this
 // also makes it easier to change, because it's defined once here).
 //
-app.use("/home", require("./controllers/home"));
+// app.use("/home", require("./controllers/home"));
 app.use("/articles", require("./controllers/articles"));
-app.use("/members", require("./controllers/members"));
+app.use("/travel", require("./controllers/travel"));
 app.use("/editors", require("./controllers/editors"));
 app.use("/login", require("./controllers/login"));
 app.use("/signup", require("./controllers/signup"));
