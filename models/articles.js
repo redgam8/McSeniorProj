@@ -2,17 +2,10 @@ var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("database.db");
 
 function addRoute(route, username, role, time, callback){
-  // count existing records to calculate next ID
-  db.all("SELECT * from Route WHERE role= (?)", role,
-  function(err,results){
-    callback(results.length);
-  });
-
-  var ID = role + (results.length + 1);
 
   // add the route with the ID
   db.run("INSERT INTO Route VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-  [routeID, route.depLat, route.depLong, route.destLat, route.destLong, route.midpoint, username, time],
+  [route.depLat, route.depLong, route.destLat, route.destLong, route.midpoint, username, time],
   function(err){
     callback();
   });
