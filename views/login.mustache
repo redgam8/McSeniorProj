@@ -11,7 +11,7 @@
       <h2>Login</h2>
       <p style="color:red;">{{ login_error }}</p>
       <form action="/login/attemptlogin" method="post">
-        <input type="text" class="form-control" placeholder="Username" name="username" required autofocus autocomplete="on" pattern="[a-z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />
+        <input type="text" class="form-control" placeholder="Username" name="username" required autofocus autocomplete="on" pattern="[a-zA-Z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />
         <input type="password" class="form-control" placeholder="Password" name="password" required />
         <br />
         <input type="submit" class="btn btn-primary" value="Sign in"><br /><br />

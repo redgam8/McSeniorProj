@@ -9,23 +9,18 @@ router.get("/", function(req, res)
 });
 
 // Create an article if the form has been submitted
-router.post("/create", function(req, res)
+router.post("/submitroute", function(req, res)
 {
 	console.log("outputting contents of the body request");
-	console.log(req.body.startingloc);
-  // Insert a message that an article has successfully been created and
-  // display the articles page again
-  function createMemberPage()
-  {
-    req.TPL.message = "Article successfully created!";
-    res.render("members", req.TPL);
-  }
-
-  // Create the article using the model method, pass req.body as a parameter
-  // since it contains the title and content data... the author is hardcoded
-  // to "bob" for now, this should be whichever user is logged-in
-  ArticlesModel.createArticle(req.body,req.session.username,createMemberPage);
+	console.log(req.body);
+ 
   console.log(req.body);
+});
+
+
+router.get("/logout", function(req, res) {
+  delete req.session.username;
+  res.redirect("/");
 });
 
 module.exports = router;

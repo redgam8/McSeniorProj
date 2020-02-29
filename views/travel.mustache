@@ -1,44 +1,60 @@
 {{>header}}
 
 <div class="row">
-  <div class="leftcolumn">
-    <div class="card">
-      <h2>Trip routes</h2>
-      <p>This page is for users to request or offer rides</p>
-      <p><strong>{{ message }}</strong></p>
-      <h3>Route</h3>
-      <form action="/submitRoute" method="post">
-        <label for="title">Title:</label>
-        <input type="radio" id="offer" name="ridetype" value="offer">
-        <label for="ridetype">offer</label><br>
-        <input type="radio" id="request" name="gender" value="request">
-        <label for="ridetype">request</label><br>
+	<div class="leftcolumn">
+		<div class="card">
+			<h2>Trip routes</h2>
+			<p>This page is for users to request or offer rides</p>
+			<p><strong>{{ message }}</strong></p>
+			<h3>Route</h3>
+			<form action="/travel/submitRoute" method="post">
+				
+				<!-- This is to decide what ridetype the user is choosing -->
+				<input type="radio" id="offer" name="ridetype" value="offer">
+				<label for="ridetype">Offer</label><br>
+				<input type="radio" id="request" name="ridetype" value="request" checked>
+				<label for="ridetype">Request</label><br>
 
-        <div id="startSearchContainer" class="form-group">
-          <label for="starLocationSearch">Start Location</label>
-          <input name="startingloc" type="text" class="form-control" id='startSearchBox' placeholder="Start Location">
-        </div>
+				<div id="startSearchContainer" class="form-group">
+					<label for="starLocationSearch">Start Location</label>
+					<input name="startingloc" type="text" class="form-control" id='startSearchBox' placeholder="Start Location">
+				</div>
+				
+				
+				<!-- hide this when we go live -->
+				<label for="startlong">start longitude</label> 
+				<input  id="startlong" name="startlong" type="text"><br>
+				
+				<label for="startlong">start latitude</label>
+				<input id="startlat" name="startlat" type="text"><br>
+				
+				
 
-        <div id="endSearchContainer" class="form-group">
-          <label for="endLocationSearch">End Location</label>
-          <input name="endingloc" type="text" class="form-control" id='endSearchBox' placeholder="End Location">
-        </div>
-        <input value="Submit" type="submit" />
-      </form>
-      <br />
+				<div id="endSearchContainer" class="form-group">
+					<label for="endLocationSearch">End Location</label>
+					<input name="endingloc" type="text" class="form-control" id='endSearchBox' placeholder="End Location">
+				</div>
+				<label for="endlong">End longitude</label>
+				<input id="endlong" name="endlong" type="text"><br>
+				
+				<label for="endlong">End latitude</label>
+				<input id="endlat" name="endlat" type="text"><br>
+				<input value="Submit" type="submit" />
+			</form>
+		<br />
 
-      <div id="myMap" style="position:relative;width:100%;height:800px;"></div>
-    </div>
-      <!-- <div> -->
-        <!-- <div id="myMap" style="position:relative;width:100%;height:600px;"></div> -->
+		<div id="myMap" style="position:relative;width:100%;height:800px;"></div>
+		</div>
+		<!-- <div> -->
+		<!-- <div id="myMap" style="position:relative;width:100%;height:600px;"></div> -->
 
-        <!-- <fieldset style="width:600px;margin-top:10px;"> -->
-        <!-- <legend> Map Search use Autosuggest</legend> -->
-      <!-- This map use Bing autosuggest as search function -->
-        <!-- </fieldset> -->
+		<!-- <fieldset style="width:600px;margin-top:10px;"> -->
+		<!-- <legend> Map Search use Autosuggest</legend> -->
+		<!-- This map use Bing autosuggest as search function -->
+		<!-- </fieldset> -->
 
-      <!-- </div> -->
-  </div>
+		<!-- </div> -->
+	</div>
 </div>
   <script>
     var map;
@@ -54,7 +70,7 @@
           map: map
         });
         locationManager1.attachAutosuggest('#startSearchBox', '#startSearchContainer', suggestionSelected);
-        locationManager2.attachAutosuggest('#endSearchBox', '#endSearchContainer', suggestionSelected);
+        locationManager2.attachAutosuggest('#endSearchBox', '#endSearchContainer', suggestionSelectedend);
       });
     }
 
@@ -67,6 +83,20 @@
       map.entities.push(pushpin);
       console.log("Lat:" + locationSuggestion.location.latitude);
       console.log("Long:" + locationSuggestion.location.longitude);
+	  $('#startlong').val(locationSuggestion.location.longitude);
+	  $('#startlat').val(locationSuggestion.location.latitude);
+    }
+	function suggestionSelectedend(locationSuggestion) {
+      // map.entities.clear();
+      map.setView({
+        bounds: locationSuggestion.bestView
+      });
+      var pushpin = new Microsoft.Maps.Pushpin(locationSuggestion.location);
+      map.entities.push(pushpin);
+      console.log("eLat:" + locationSuggestion.location.latitude);
+      console.log("eLong:" + locationSuggestion.location.longitude);
+	  $('#endlong').val(locationSuggestion.location.longitude);
+	  $('#endlat').val(locationSuggestion.location.latitude);
     }
   </script>
   <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7' async defer></script>

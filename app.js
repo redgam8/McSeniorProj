@@ -26,7 +26,7 @@ app.use(function(req,res,next) {
   req.TPL = {};
 
   // decide whether to display the login or log out button in the navbar
-  req.TPL.displaylogin = !req.session.username;
+  //req.TPL.displaylogin = !req.session.username;
   req.TPL.displaylogout = req.session.username;
 
   next();
@@ -59,19 +59,21 @@ app.use(timeLogger);
 //         function(req,res,next) { req.TPL.loginnav = true; next(); });
 
 // protect access to the members page, re-direct user to home page if nobody
-// is logged in...
+// is logged in
+
+
+//protects access to travel page - must be logged in
 app.use("/travel", function(req,res,next) {
 
   if (req.session.username) next();
   else res.redirect("/login");
 
 });
+//protects access to the signup page. Already logged in
+app.use("/signup", function(req,res,next) {
 
-//Protect the editors page - redirect if not an editor
-app.use("/editors", function(req,res,next) {
-
- if (req.session.level=="editor") next();
-  //else res.redirect("/home");
+  if (req.session.username) res.redirect("/travel");
+  else next();
 
 });
 
@@ -113,7 +115,9 @@ app.use("/signup", require("./controllers/signup"));
 
 // - We route / to redirect to /home by default
 app.get("/", function(req, res) {
-  res.redirect("/login");
+	  if (req.session.username) res.redirect("/travel");
+  else res.redirect("/login");
+
 });
 
 

@@ -8,11 +8,11 @@ db.serialize(function(){
 
   // Create an initial table of users
   db.run("DROP TABLE IF EXISTS Users");
-  db.run("CREATE TABLE Users (username TEXT, passwordHash TEXT, name TEXT, email TEXT, role TEXT)");
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?)", ['mem1', passwordSha, 'nameSample', 'emailSample', 'Driver']);
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?)", ['mem2', passwordSha, 'nameSample', 'emailSample', 'Rider']);
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?)", ['edit1', passwordSha, 'nameSample', 'emailSample', 'Driver']);
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?)", ['edit2', passwordSha, 'nameSample', 'emailSample', 'Rider']);
+  db.run("CREATE TABLE Users (username TEXT, passwordHash TEXT, fname TEXT, lname TEXT, email TEXT, phonenumber TEXT)");
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?)", ['mem1', passwordSha, 'nameSample', 'lastname26', 'emailSample', '123456789']);
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?)", ['mem2', passwordSha, 'nameSample', 'lastname24', 'emailSample', '123456789']);
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?)", ['edit1', passwordSha, 'nameSample', 'lastname23', 'emailSample', '123456789']);
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?)", ['edit2', passwordSha, 'nameSample', 'lastname2', 'emailSample', '123456789']);
 
   // create an initial table of articles
   // db.run("DROP TABLE IF EXISTS Articles");

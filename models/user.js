@@ -8,25 +8,17 @@ function getUsers(username, callback)
   	     function(err,results) { callback(results); });
 }
 
-// Create a new article given a title, content and username
-function createArticle(article,username,callback)
-{
-  db.run("INSERT INTO Articles VALUES (?,?,?)",
-         [article.title, username, article.content],
-         function(err)
-         {
-           callback();
-         });
-}
 
-function createUser(username,password, name, email, role)
+
+function createUser(username, password, fname, lname, email, phonenumber)
 {
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?)",
-         [username, password, name, email, role],
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?)",
+         [username,password, fname, lname, email, phonenumber],
          function(err) {
            // callback();
          }
        );
+	   console.log(username, password, fname, lname, email, phonenumber); 
 }
 
 
@@ -41,4 +33,4 @@ function deleteContent(type,id,callback)
     db.run("DELETE FROM " + type + " WHERE rowid=?",id,
          function(err) { callback(); });
 }
-module.exports = {getUsers,createArticle,createUser,getAllUsers,deleteContent};
+module.exports = {getUsers,createUser,getAllUsers,deleteContent};

@@ -16,12 +16,13 @@ router.post("/attemptsignup", function(req, res) {
 
   function userNameCheck(array2) {
     if (array2.length > 0) {
-      req.session.signup_error = "Username Duplicated!";
+      req.session.signup_error = "Username already Exists!";
       res.redirect("/signup");
 
     } else {
+		
       function addUser(passwordInputHash){
-        user.createUser(req.body.username, passwordInputHash, req.body.name, req.body.email, req.body.role);
+        user.createUser(req.body.username, passwordInputHash, req.body.fname, req.body.lname, req.body.email, req.body.phonenumber);
         req.session.login_error = "User account created! Please Login.";
         res.redirect("/login");
       };
