@@ -69,6 +69,13 @@ app.use("/travel", function(req,res,next) {
   else res.redirect("/login");
 
 });
+
+app.use("/login", function(req,res,next) {
+
+  if (req.session.username) res.redirect("/travel");
+  else next();
+
+});
 //protects access to the signup page. Already logged in
 app.use("/signup", function(req,res,next) {
 

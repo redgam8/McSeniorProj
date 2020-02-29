@@ -18,7 +18,14 @@ router.post("/attemptlogin", function(req, res) {
 
       function compare(passwordInputHash){
         if (passwordInputHash == array2[0].passwordHash) {
-            req.session.username = req.body.username;
+			//assign these to the session: userid, username, password, fname, lname, email, phonenumber
+            req.session.userid = array2[0].userid;
+            req.session.username = array2[0].username;
+            req.session.fname = array2[0].fname;
+            req.session.lname = array2[0].lname;
+            req.session.phonenumber = array2[0].phonenumber;
+			
+			console.log(req.session);
             res.redirect("/travel");
         }else{
           req.session.login_error = "Invalid password!";

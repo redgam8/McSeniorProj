@@ -7,18 +7,25 @@ function getUsers(username, callback)
   db.all("SELECT * FROM Users WHERE username = ?",username,
   	     function(err,results) { callback(results); });
 }
-
-
-
-function createUser(username, password, fname, lname, email, phonenumber)
+function getidUserid(userid, callback)
 {
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?)",
-         [username,password, fname, lname, email, phonenumber],
+  db.all("SELECT * FROM Users WHERE userid = ?",userid,
+  	     function(err,results) { callback(results); });
+}
+
+
+
+
+
+function createUser(userid, username, password, fname, lname, email, phonenumber)
+{
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?)",
+         [userid, username,password, fname, lname, email, phonenumber],
          function(err) {
            // callback();
          }
        );
-	   console.log(username, password, fname, lname, email, phonenumber); 
+	   console.log("database input=", userid, username, password, fname, lname, email, phonenumber); 
 }
 
 
@@ -33,4 +40,4 @@ function deleteContent(type,id,callback)
     db.run("DELETE FROM " + type + " WHERE rowid=?",id,
          function(err) { callback(); });
 }
-module.exports = {getUsers,createUser,getAllUsers,deleteContent};
+module.exports = {getUsers,getidUserid,createUser,getAllUsers,deleteContent};

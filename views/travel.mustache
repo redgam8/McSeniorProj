@@ -7,7 +7,7 @@
 			<p>This page is for users to request or offer rides</p>
 			<p><strong>{{ message }}</strong></p>
 			<h3>Route</h3>
-			<form action="/travel/submitRoute" method="post">
+			<form action="/travel/submitroute" method="post">
 				
 				<!-- This is to decide what ridetype the user is choosing -->
 				<input type="radio" id="offer" name="ridetype" value="offer">
@@ -39,6 +39,8 @@
 				
 				<label for="endlong">End latitude</label>
 				<input id="endlat" name="endlat" type="text"><br>
+				<input type="time" id="appt" name="appt"
+      required>
 				<input value="Submit" type="submit" />
 			</form>
 		<br />
