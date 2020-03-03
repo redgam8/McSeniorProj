@@ -1,43 +1,76 @@
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("database.db");
 
-// Return all of the articles
-function getUsers(username, callback)
-{
-  db.all("SELECT * FROM Users WHERE username = ?",username,
-  	     function(err,results) { callback(results); });
-}
-function getidUserid(userid, callback)
-{
-  db.all("SELECT * FROM Users WHERE userid = ?",userid,
-  	     function(err,results) { callback(results); });
+function getUsersWithUsername(username, callback) {
+  db.all("SELECT * FROM Users WHERE username = ?", username, function(
+    err,
+    results
+  ) {
+    callback(results);
+  });
 }
 
+// function getidUserid(userid, callback) {
+//   db.all("SELECT * FROM Users WHERE userid = ?", userid, function(
+//     err,
+//     results
+//   ) {
+//     callback(results);
+//   });
+// }
 
-
-
-
-function createUser(userid, username, password, fname, lname, email, phonenumber)
-{
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?)",
-         [userid, username,password, fname, lname, email, phonenumber],
-         function(err) {
-           // callback();
-         }
-       );
-	   console.log("database input=", userid, username, password, fname, lname, email, phonenumber); 
+function getidUserid(req, callback) {
+  db.all("SELECT * FROM Users", function(
+    err,
+    results
+  ) {
+    callback(results);
+  });
 }
 
-
-function getAllUsers(callback)
-{
-  db.all("SELECT rowid,* FROM Users",
-  	     function(err,results) { callback(results); });
+function createUser(
+  userid,
+  username,
+  password,
+  fname,
+  lname,
+  email,
+  phonenumber
+) {
+  db.run(
+    "INSERT INTO Users VALUES (?,?,?,?,?,?,?)",
+    [userid, username, password, fname, lname, email, phonenumber],
+    function(err) {
+      // callback();
+    }
+  );
+  console.log(
+    "database input=",
+    userid,
+    username,
+    password,
+    fname,
+    lname,
+    email,
+    phonenumber
+  );
 }
 
-function deleteContent(type,id,callback)
-{
-    db.run("DELETE FROM " + type + " WHERE rowid=?",id,
-         function(err) { callback(); });
+function getAllUsers(callback) {
+  db.all("SELECT rowid,* FROM Users", function(err, results) {
+    callback(results);
+  });
 }
-module.exports = {getUsers,getidUserid,createUser,getAllUsers,deleteContent};
+
+function deleteContent(type, id, callback) {
+  db.run("DELETE FROM " + type + " WHERE rowid=?", id, function(err) {
+    callback();
+  });
+}
+module.exports = {
+  getUsersWithUsername,
+  getidUserid,
+  createUser,
+  getAllUsers,
+  deleteContent
+};

@@ -11,36 +11,37 @@ router.get("/", function(req, res) {
 });
 
 router.post("/attemptlogin", function(req, res) {
-  user.getUsers(req.body.username, userNameCheck);
+  user.getUsersWithUsername(req.body.username, userNameCheck);
 
   function userNameCheck(array2) {
-    if (array2.length > 0 && req.body.username == array2[0].username ) {
-
-      function compare(passwordInputHash){
+    if (array2.length > 0 && req.body.username == array2[0].username) {
+      function compare(passwordInputHash) {
         if (passwordInputHash == array2[0].passwordHash) {
-			//assign these to the session: userid, username, password, fname, lname, email, phonenumber
-            req.session.userid = array2[0].userid;
-            req.session.username = array2[0].username;
-            req.session.fname = array2[0].fname;
-            req.session.lname = array2[0].lname;
-            req.session.phonenumber = array2[0].phonenumber;
-			
-			console.log(req.session);
-            res.redirect("/travel");
-        }else{
+          //assign these to the session: userid, username, password, fname, lname, email, phonenumber
+          req.session.userid = array2[0].userid;
+          req.session.username = array2[0].username;
+          req.session.fname = array2[0].fname;
+          req.session.lname = array2[0].lname;
+          req.session.phonenumber = array2[0].phonenumber;
+
+          console.log(req.session);
+          res.redirect("/travel");
+        } else {
           req.session.login_error = "Invalid password!";
           res.redirect("/login");
         }
-      };
+      }
 
-      function hash(callback){
-        var passwordInputHash = require('crypto').createHash('sha256').update(req.body.password).digest("hex");
+      function hash(callback) {
+        var passwordInputHash = require("crypto")
+          .createHash("sha256")
+          .update(req.body.password)
+          .digest("hex");
         callback(passwordInputHash);
       }
 
       hash(compare);
-
-    }else{
+    } else {
       req.session.login_error = "Invalid username!";
       res.redirect("/login");
     }

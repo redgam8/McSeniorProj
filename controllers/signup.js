@@ -10,66 +10,103 @@ router.get("/", function(req, res) {
 
   res.render("signup", req.TPL);
 });
-//Factor this code to use callback chaining > username check > user id check > user add
+
 router.post("/attemptsignup", function(req, res) {
-	//user.getUsers(req.body.username, userNameCheck);
-	
-	function randomString(length, chars) {
-				var result = '';
-				for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-				return result;
-			}
-			
- var useridx = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
-		 
-	user.getidUserid(useridx, useridcheck2);
-	console.log("useridx= ",useridx);
+  function randomString(length, chars) {
+    var result = "";
+    for (var i = length; i > 0; --i)
+      result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  }
 
-			
-	 function useridcheck2(array3) {
-		 console.log(array3.length);
-		// array3=0;
-		if (array3.length > 0) {
-			req.session.signup_error = "Key Duplicated!";
-		 var useridx = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
-		 
-		 console.log("useridx=",useridx, " is duplicated");
-		useridcheck2(useridx);
+  var dbResArr2;
+  var input = req.body;
 
+  function usernameCheck(input) {
+    return new Promise(function(resolve, reject) {
+      user.getUsersWithUsername(input.username, function(dbResArr1) {
+        if (dbResArr1.length > 0) {
+          reject("Username Duplicated!");
+        }
+        resolve(input);
+      });
+    });
+  }
 
+    function usernameCheck(input) {
+      return new Promise(function(resolve, reject) {
+        user.getUsersWithUsername(input.username, function(dbResArr1) {
+          if (dbResArr1.length > 0) {
+            reject("Username Duplicated!");
+          }
+          resolve(input);
+        });
+      });
+    }
 
-		} else 
-		{		
-			
-			console.log("It seems okay");
-			user.getUsers(req.body.username, userNameCheck);
-		} 
-	}
-	  function userNameCheck(array2) {
-		if (array2.length > 0) {
-		  req.session.signup_error = "Username Duplicated!";
-		  res.redirect("/signup");
+  function userIdCheck(input) {
+    return new Promise(function(resolve, reject) {
+      var useridx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
+      var test = 0;
 
+      user.getidUserid(req, function(dbIDs) {
+        for (var i = 0; i < dbIDs.length; i++) {
+          if (useridx == dbIDs[i].userid) {
+            useridx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
+            i = 0;
+            console.log("key duplicated");
+          } else {
+            console.log("Found the unique ID");
+            input["useridx"] = useridx;
+            i=dbIDs.length;
+            resolve(input);
+          }
+        }
+      });
+    });
+  }
 
+  function convertHash(input) {
+    return new Promise(function(resolve, reject) {
+      var passwordInputHash = require("crypto")
+        .createHash("sha256")
+        .update(input.password)
+        .digest("hex");
+      input["passwordInputHash"] = passwordInputHash;
+      resolve(input);
+    });
+  }
 
+  function addUser(input) {
+    return new Promise(function(resolve, reject) {
+      user.createUser(
+        input.useridx,
+        input.username,
+        input.passwordInputHash,
+        input.fname,
+        input.lname,
+        input.email,
+        input.phonenumber
+      );
+    });
+  }
 
-		} else 
-		{		
-			
-		
-			function addUser(passwordInputHash){
-				user.createUser(useridx, req.body.username, passwordInputHash, req.body.fname,req.body.lname, req.body.email, req.body.phonenumber);
-				req.session.login_error = "User account created! Please Login.";
-				res.redirect("/login");
-			};
-			function hashSignup(callback){
-				passwordInputHash = require('crypto').createHash('sha256').update(req.body.password).digest("hex");
-				callback(passwordInputHash);
-			}
-				hashSignup(addUser);
+  function backToLogin() {
+    return new Promise(function(resolve, reject) {
+      req.session.login_error = "User account created! Please Login.";
+      res.redirect("/login");
+    });
+  }
 
-		}
-	}
+  usernameCheck(input)
+    .then(userIdCheck(input))
+    .then(convertHash(input))
+    .then(addUser(input))
+    .then(backToLogin)
+    .catch(function(err) {
+      req.session.signup_error = err;
+      res.redirect("/signup");
+    });
 });
 
 module.exports = router;

@@ -8,27 +8,32 @@
 			<p><strong>{{ message }}</strong></p>
 			<h3>Route</h3>
 			<form action="/travel/submitroute" method="post">
-				
+
 				<!-- This is to decide what ridetype the user is choosing -->
-				<input type="radio" id="offer" name="ridetype" value="offer">
-				<label for="ridetype">Offer</label><br>
-				<input type="radio" id="request" name="ridetype" value="request" checked>
-				<label for="ridetype">Request</label><br>
+				<label>
+					<input type="radio" id="offer" name="ridetype" value="offer">
+					<img src="./views/Driver.gif" width="150px" />
+				</label>&nbsp;&nbsp;&nbsp;
+
+				<label>
+					<input type="radio" id="request" name="ridetype" value="request" checked>
+					<img src="./views/Rider.gif" width="150px" />
+				</label><br /><br />
 
 				<div id="startSearchContainer" class="form-group">
 					<label for="starLocationSearch">Start Location</label>
 					<input name="startingloc" type="text" class="form-control" id='startSearchBox' placeholder="Start Location">
 				</div>
-				
-				
+
+
 				<!-- hide this when we go live -->
-				<label for="startlong">start longitude</label> 
-				<input  id="startlong" name="startlong" type="text"><br>
-				
+				<label for="startlong">start longitude</label>
+				<input id="startlong" name="startlong" type="text"><br>
+
 				<label for="startlong">start latitude</label>
 				<input id="startlat" name="startlat" type="text"><br>
-				
-				
+
+
 
 				<div id="endSearchContainer" class="form-group">
 					<label for="endLocationSearch">End Location</label>
@@ -36,16 +41,15 @@
 				</div>
 				<label for="endlong">End longitude</label>
 				<input id="endlong" name="endlong" type="text"><br>
-				
+
 				<label for="endlong">End latitude</label>
 				<input id="endlat" name="endlat" type="text"><br>
-				<input type="time" id="appt" name="appt"
-      required>
+				<input type="time" id="appt" name="appt" required>
 				<input value="Submit" type="submit" />
 			</form>
-		<br />
+			<br />
 
-		<div id="myMap" style="position:relative;width:100%;height:800px;"></div>
+			<div id="myMap" style="position:relative;width:100%;height:800px;"></div>
 		</div>
 		<!-- <div> -->
 		<!-- <div id="myMap" style="position:relative;width:100%;height:600px;"></div> -->
@@ -58,49 +62,50 @@
 		<!-- </div> -->
 	</div>
 </div>
-  <script>
-    var map;
+<script>
+	var map;
 
-    function GetMap() {
-      map = new Microsoft.Maps.Map('#myMap', {});
+	function GetMap() {
+		map = new Microsoft.Maps.Map('#myMap', {});
 
-      Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', function() {
-        var locationManager1 = new Microsoft.Maps.AutosuggestManager({
-          map: map
-        });
-        var locationManager2 = new Microsoft.Maps.AutosuggestManager({
-          map: map
-        });
-        locationManager1.attachAutosuggest('#startSearchBox', '#startSearchContainer', suggestionSelected);
-        locationManager2.attachAutosuggest('#endSearchBox', '#endSearchContainer', suggestionSelectedend);
-      });
-    }
+		Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', function() {
+			var locationManager1 = new Microsoft.Maps.AutosuggestManager({
+				map: map
+			});
+			var locationManager2 = new Microsoft.Maps.AutosuggestManager({
+				map: map
+			});
+			locationManager1.attachAutosuggest('#startSearchBox', '#startSearchContainer', suggestionSelected);
+			locationManager2.attachAutosuggest('#endSearchBox', '#endSearchContainer', suggestionSelectedend);
+		});
+	}
 
-    function suggestionSelected(locationSuggestion) {
-      // map.entities.clear();
-      map.setView({
-        bounds: locationSuggestion.bestView
-      });
-      var pushpin = new Microsoft.Maps.Pushpin(locationSuggestion.location);
-      map.entities.push(pushpin);
-      console.log("Lat:" + locationSuggestion.location.latitude);
-      console.log("Long:" + locationSuggestion.location.longitude);
-	  $('#startlong').val(locationSuggestion.location.longitude);
-	  $('#startlat').val(locationSuggestion.location.latitude);
-    }
+	function suggestionSelected(locationSuggestion) {
+		// map.entities.clear();
+		map.setView({
+			bounds: locationSuggestion.bestView
+		});
+		var pushpin = new Microsoft.Maps.Pushpin(locationSuggestion.location);
+		map.entities.push(pushpin);
+		console.log("Lat:" + locationSuggestion.location.latitude);
+		console.log("Long:" + locationSuggestion.location.longitude);
+		$('#startlong').val(locationSuggestion.location.longitude);
+		$('#startlat').val(locationSuggestion.location.latitude);
+	}
+
 	function suggestionSelectedend(locationSuggestion) {
-      // map.entities.clear();
-      map.setView({
-        bounds: locationSuggestion.bestView
-      });
-      var pushpin = new Microsoft.Maps.Pushpin(locationSuggestion.location);
-      map.entities.push(pushpin);
-      console.log("eLat:" + locationSuggestion.location.latitude);
-      console.log("eLong:" + locationSuggestion.location.longitude);
-	  $('#endlong').val(locationSuggestion.location.longitude);
-	  $('#endlat').val(locationSuggestion.location.latitude);
-    }
-  </script>
-  <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7' async defer></script>
+		// map.entities.clear();
+		map.setView({
+			bounds: locationSuggestion.bestView
+		});
+		var pushpin = new Microsoft.Maps.Pushpin(locationSuggestion.location);
+		map.entities.push(pushpin);
+		console.log("eLat:" + locationSuggestion.location.latitude);
+		console.log("eLong:" + locationSuggestion.location.longitude);
+		$('#endlong').val(locationSuggestion.location.longitude);
+		$('#endlat').val(locationSuggestion.location.latitude);
+	}
+</script>
+<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7' async defer></script>
 
-  {{>footer}}
+{{>footer}}
