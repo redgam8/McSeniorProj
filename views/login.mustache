@@ -9,7 +9,8 @@
         Rider test: mem2 / password<br />
       </p>
       <h2>Login</h2>
-      <p style="color:red;">{{ login_error }}</p>
+      <p style="color:red;"><strong>{{ login_error }}</strong></p>
+      <p style="color:green;"><strong>{{ login_ready }}</strong></p>
       <form action="/login/attemptlogin" method="post">
         <input type="text" class="form-control" placeholder="Username" name="username" required autofocus autocomplete="on" pattern="[a-zA-Z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />
         <input type="password" class="form-control" placeholder="Password" name="password" required />

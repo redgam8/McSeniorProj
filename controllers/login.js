@@ -5,24 +5,29 @@ const user = require("../models/user.js");
 router.get("/", function(req, res) {
   //Display error if there is, then reset it.
   req.TPL.login_error = req.session.login_error;
+  req.TPL.login_ready = req.session.login_ready;
   req.session.login_error = "";
+  req.session.login_ready = "";
 
   res.render("login", req.TPL);
 });
 
 router.post("/attemptlogin", function(req, res) {
-  user.getUsersWithUsername(req.body.username, userNameCheck);
+  var input = req.body;
 
-  function userNameCheck(array2) {
-    if (array2.length > 0 && req.body.username == array2[0].username) {
-      function compare(passwordInputHash) {
-        if (passwordInputHash == array2[0].passwordHash) {
+  function compare(input) {
+    return new Promise(function(resolve, reject) {
+      user.getUsersWithUsername(input.username, function(dbRes) {
+        if (
+          input.username == dbRes[0].username &&
+          input.passwordInputHash == dbRes[0].passwordHash
+        ) {
           //assign these to the session: userid, username, password, fname, lname, email, phonenumber
-          req.session.userid = array2[0].userid;
-          req.session.username = array2[0].username;
-          req.session.fname = array2[0].fname;
-          req.session.lname = array2[0].lname;
-          req.session.phonenumber = array2[0].phonenumber;
+          req.session.userid = dbRes[0].userid;
+          req.session.username = dbRes[0].username;
+          req.session.fname = dbRes[0].fname;
+          req.session.lname = dbRes[0].lname;
+          req.session.phonenumber = dbRes[0].phonenumber;
 
           console.log(req.session);
           res.redirect("/travel");
@@ -30,22 +35,27 @@ router.post("/attemptlogin", function(req, res) {
           req.session.login_error = "Invalid password!";
           res.redirect("/login");
         }
-      }
-
-      function hash(callback) {
-        var passwordInputHash = require("crypto")
-          .createHash("sha256")
-          .update(req.body.password)
-          .digest("hex");
-        callback(passwordInputHash);
-      }
-
-      hash(compare);
-    } else {
-      req.session.login_error = "Invalid username!";
-      res.redirect("/login");
-    }
+      });
+    });
   }
+
+  function convertHash(input) {
+    return new Promise(function(resolve, reject) {
+      var passwordInputHash = require("crypto")
+        .createHash("sha256")
+        .update(input.password)
+        .digest("hex");
+      input["passwordInputHash"] = passwordInputHash;
+      resolve(input);
+    });
+  }
+
+  convertHash(input)
+    .then(compare(input))
+    .catch(function(err) {
+      req.session.login_error = err;
+      res.redirect("/login");
+    });
 });
 
 router.get("/logout", function(req, res) {

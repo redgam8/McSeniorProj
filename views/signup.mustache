@@ -6,8 +6,7 @@
   <div class="leftcolumn">
     <div class="card">
       <h2>Create an account</h2>
-      <p style="color:red;">{{ signup_error }}</p>
-      <p>{{{ signup_success }}}</p>
+      <p style="color: red"><strong>{{ signup_error}}</strong></p>
       <form action="/signup/attemptsignup" method="post">
 
         <input type="text" class="form-control" id="username-create" name="username" placeholder="Username" required autofocus pattern="[a-zA-Z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />

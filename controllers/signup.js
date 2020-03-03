@@ -4,9 +4,7 @@ const user = require("../models/user.js");
 
 router.get("/", function(req, res) {
   req.TPL.signup_error = req.session.signup_error;
-  req.TPL.login_error = req.session.login_error;
   req.session.signup_error = "";
-  req.session.login_error = "";
 
   res.render("signup", req.TPL);
 });
@@ -93,7 +91,7 @@ router.post("/attemptsignup", function(req, res) {
 
   function backToLogin() {
     return new Promise(function(resolve, reject) {
-      req.session.login_error = "User account created! Please Login.";
+      req.session.login_ready = "User account created! Please Login.";
       res.redirect("/login");
     });
   }

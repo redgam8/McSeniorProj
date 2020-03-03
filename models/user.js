@@ -10,15 +10,6 @@ function getUsersWithUsername(username, callback) {
   });
 }
 
-// function getidUserid(userid, callback) {
-//   db.all("SELECT * FROM Users WHERE userid = ?", userid, function(
-//     err,
-//     results
-//   ) {
-//     callback(results);
-//   });
-// }
-
 function getidUserid(req, callback) {
   db.all("SELECT * FROM Users", function(
     err,
