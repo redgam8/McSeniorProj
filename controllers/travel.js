@@ -13,21 +13,50 @@ router.post("/submitroute", function(req, res)
 {
 	
 	
+	function addroutetodatabase (){
+		
+		
+		
+		
+	}
+	
+	
 	
 	
 	console.log("outputting contents of the body request");
 	console.log(req.body);
- 
-	 travel.addRoute(req.body.ridetype, 
+	
+	console.log(req.session.userid,
+					 req.body.ridetype, 
+					 req.body.startingloc, 
+					 req.body.startlong, 
+					 req.body.startlat, 
+					 req.body.startingloc, 
+					 req.body.endlong, 
+					 req.body.endlat, 
+					 req.body.date,
+					 req.body.time);
+	
+	//valueAsNumber
+	
+	
+	
+	
+ /* 
+	 travel.addRoute(req.session.userid,
+					req.body.ridetype, 
 					req.body.startlong, 
 					req.body.startlat, 
 					req.body.endlong, 
-					req.body.endlat, test);
+					req.body.endlat, 
+					req.body.date,
+					req.body.time,
+					 test);
 	
 	
+	 */
 	
-	
-	
+	 res.redirect("/");
 	//userid	ridetype	startlong	startlat	endlong	endlat	status
 
 });
