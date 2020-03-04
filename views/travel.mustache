@@ -44,7 +44,8 @@
 
 				<label for="endlong">End latitude</label>
 				<input id="endlat" name="endlat" type="text"><br>
-				<input type="time" id="appt" name="appt" required>
+				<input type="date" id="date" name="date" placeholder="YYYY/MM/DD" required >
+				<input type="time" id="time" name="time" required>
 				<input value="Submit" type="submit" />
 			</form>
 			<br />
@@ -63,6 +64,67 @@
 	</div>
 </div>
 <script>
+	//console.log(Date());
+	n =  new Date();
+y = n.getFullYear();
+if (n.getMonth()<10)
+{
+	m2 = "0" + (n.getMonth() + 1);
+}
+else
+{
+	m2=n.getMonth();
+}
+
+//d = n.getDate();
+
+if (n.getDate()<10)
+{
+d2 = "0" + (n.getDate());
+
+}
+
+else
+{
+	d2=(n.getDate());
+}
+
+console.log(y);
+console.log(m2);
+console.log(d2);
+
+
+if (h=n.getHours()<12)
+{	
+
+h="0"+(n.getHours());
+
+}
+else
+{
+	h=(n.getHours());
+}
+
+if (n.getMinutes() <10)
+{
+mm="0"+(n.getMinutes());
+}
+
+else
+{
+	mm=(n.getMinutes());
+}
+
+
+
+	
+	
+	
+	console.log(h);
+	
+	
+	 $('#date').val(y + "-" + m2 + "-" + d2);
+	  $('#time').val(h+":"+mm);
 	var map;
 
 	function GetMap() {
