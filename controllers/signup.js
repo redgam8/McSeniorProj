@@ -18,6 +18,7 @@ router.post("/attemptsignup", function(req, res) {
   }
 
   var dbResArr2;
+  var dbResArr1;
   var input = req.body;
 
   function usernameCheck(input) {
@@ -31,35 +32,23 @@ router.post("/attemptsignup", function(req, res) {
     });
   }
 
-    function usernameCheck(input) {
-      return new Promise(function(resolve, reject) {
-        user.getUsersWithUsername(input.username, function(dbResArr1) {
-          if (dbResArr1.length > 0) {
-            reject("Username Duplicated!");
-          }
-          resolve(input);
-        });
-      });
-    }
-
   function userIdCheck(input) {
     return new Promise(function(resolve, reject) {
-      var useridx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
-      var test = 0;
+      var useridx;
 
-      user.getidUserid(req, function(dbIDs) {
-        for (var i = 0; i < dbIDs.length; i++) {
-          if (useridx == dbIDs[i].userid) {
+      user.getidUserid(req, function(dbResArr1) {
+        for (var i = 0; i < dbResArr1.length; i++) {
+          if (useridx == dbResArr1[i].userid) {
+            console.log("input ID: ", useridx);
+            console.log("return ID: ", dbResArr1[0].userid);
+            console.log("key duplicated");
             useridx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
             i = 0;
-            console.log("key duplicated");
-          } else {
-            console.log("Found the unique ID");
-            input["useridx"] = useridx;
-            i=dbIDs.length;
-            resolve(input);
           }
         }
+        console.log("Found the unique ID");
+        input["useridx"] = useridx;
+        resolve(input);
       });
     });
   }
