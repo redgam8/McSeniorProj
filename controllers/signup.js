@@ -20,6 +20,7 @@ router.post("/attemptsignup", function(req, res) {
   var dbResArr2;
   var dbResArr1;
   var input = req.body;
+  var useridx;
 
   function usernameCheck(input) {
     return new Promise(function(resolve, reject) {
@@ -32,64 +33,39 @@ router.post("/attemptsignup", function(req, res) {
     });
   }
 
-  function userIdCheck(input) {
-    return new Promise(function(resolve, reject) {
-      var useridx;
+  function userIdCheckLoop(dbResArr1) {
+    if (dbResArr1.length > 0) {
+      console.log("input ID: ", useridx);
+      console.log("return ID: ", dbResArr1[0].userid);
+      console.log("key duplicated");
+      useridx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
 
-      user.getidUserid(req, function(dbResArr1) {
-        for (var i = 0; i < dbResArr1.length; i++) {
-          if (useridx == dbResArr1[i].userid) {
-            console.log("input ID: ", useridx);
-            console.log("return ID: ", dbResArr1[0].userid);
-            console.log("key duplicated");
-            useridx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
-            i = 0;
-          }
-        }
-        console.log("Found the unique ID");
-        input["useridx"] = useridx;
-        resolve(input);
-      });
-    });
-  }
-
-  function convertHash(input) {
-    return new Promise(function(resolve, reject) {
-      var passwordInputHash = require("crypto")
+      user.getidUserid(useridx, userIdCheckLoop);
+    } else {
+      console.log("Found the unique ID");
+      input["useridx"] = useridx;
+      input["passwordInputHash"] = require("crypto")
         .createHash("sha256")
         .update(input.password)
-        .digest("hex");
-      input["passwordInputHash"] = passwordInputHash;
-      resolve(input);
-    });
-  }
-
-  function addUser(input) {
-    return new Promise(function(resolve, reject) {
-      user.createUser(
-        input.useridx,
-        input.username,
-        input.passwordInputHash,
-        input.fname,
-        input.lname,
-        input.email,
-        input.phonenumber
+        .digest("hex");;
+      user.createUser(input.useridx, input.username, input.passwordInputHash, input.fname, input.lname, input.email, input.phonenumber, function() {
+          req.session.login_ready = "User account created! Please Login.";
+          res.redirect("/login");
+        }
       );
-    });
+    }
   }
 
-  function backToLogin() {
+  function userIdCheck(input) {
     return new Promise(function(resolve, reject) {
-      req.session.login_ready = "User account created! Please Login.";
-      res.redirect("/login");
+      useridx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
+
+      user.getidUserid(useridx, userIdCheckLoop);
     });
   }
 
   usernameCheck(input)
     .then(userIdCheck(input))
-    .then(convertHash(input))
-    .then(addUser(input))
-    .then(backToLogin)
     .catch(function(err) {
       req.session.signup_error = err;
       res.redirect("/signup");

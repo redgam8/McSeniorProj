@@ -10,17 +10,8 @@ function getUsersWithUsername(username, callback) {
   });
 }
 
-// function getidUserid(useridx, callback) {
-//   db.all("SELECT * FROM Users WHERE userid = ?", useridx,function(
-//     err,
-//     results
-//   ) {
-//     callback(results);
-//   });
-// }
-
-function getidUserid(req, callback) {
-  db.all("SELECT userid FROM Users", function(
+function getidUserid(useridx, callback) {
+  db.all("SELECT * FROM Users WHERE userid = ?", useridx,function(
     err,
     results
   ) {
@@ -35,13 +26,13 @@ function createUser(
   fname,
   lname,
   email,
-  phonenumber
+  phonenumber, callback
 ) {
   db.run(
     "INSERT INTO Users VALUES (?,?,?,?,?,?,?)",
     [userid, username, password, fname, lname, email, phonenumber],
     function(err) {
-      // callback();
+      callback();
     }
   );
   console.log(
