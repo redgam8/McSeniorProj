@@ -12,14 +12,7 @@
 <!-- JQuery--> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
   
-  <!-- Geolocations of following places -->
-  <!-- <script src="schools.js"></script> -->
-  <!-- <script src="hospitals.js"></script> -->
-  <!-- <script src="firestations.js"></script> -->
-  <!-- <script src="waterfalls.js"></script> -->
- <!-------------------------------------->
- 
- 
+
 </head>
 <body>
 <style> #myMap{display:none;} </style>
@@ -62,13 +55,9 @@
     var pushpin_defult = new Microsoft.Maps.Pushpin(location_defult, null);
    //map.entities.push(pushpin_defult);
 	map.setView({center:location_defult,zoom:15});
-	
  
   <!-- rout driver button  -->
 	$("#routT").click(function(){routeDriver();});
- 
- 
-	
 
 <!-- Route driver locations -->		
 	function routeDriver(){
