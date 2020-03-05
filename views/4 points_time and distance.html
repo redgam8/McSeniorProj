@@ -12,14 +12,6 @@
 <!-- JQuery--> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
   
-  <!-- Geolocations of following places -->
-  <!-- <script src="schools.js"></script> -->
-  <!-- <script src="hospitals.js"></script> -->
-  <!-- <script src="firestations.js"></script> -->
-  <!-- <script src="waterfalls.js"></script> -->
- <!-------------------------------------->
- 
- 
 </head>
 <body>
 <style> #myMap{display:none;} </style>
@@ -39,18 +31,14 @@
 	Rider End: 
 	<input id= "rELat" type = "number" name="bla7" value = "43.5479"> </input> 
 	<input id= "rELong" type = "number" name="bla8" value = "-79.6637"> </input> 
-	<br>
-	
-	<br>
+	<br><br>
 
 	<button id="routF" type="button" class="btn btn-primary">Route all</button>
 	<div id="output" :"2000></div>
 	<br> 
-	
 	</div>
 	<div id='routeInfo'></div>
- 
- 
+
   <div id="myMap" style=" width:800px;height:600px;" ></div>
 
   <script>
@@ -74,9 +62,6 @@
   <!-- rout all button  -->
 	$("#routF").click(function(){routeALL();});
  
- 
-	
-
 <!-- Route all four locations -->
  	function routeALL(){
 		
@@ -134,12 +119,9 @@
         }
  
 });
-} 
-	
-}
+} }
 
   </script>
-
   <script src="https://www.bing.com/api/maps/mapcontrol?key=Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&callback=loadmap" async defer>
   </script>
 </body>
