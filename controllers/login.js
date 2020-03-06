@@ -18,11 +18,10 @@ router.post("/attemptlogin", function(req, res) {
   function compare(input) {
     return new Promise(function(resolve, reject) {
       user.getUsersWithUsername(input.username, function(dbRes) {
-        if (
-          input.username == dbRes[0].username &&
-          input.passwordInputHash == dbRes[0].passwordHash
+        if (dbRes[0] &&
+          (input.username == dbRes[0].username &&
+          input.passwordInputHash == dbRes[0].passwordHash)
         ) {
-          //assign these to the session: userid, username, password, fname, lname, email, phonenumber
           req.session.userid = dbRes[0].userid;
           req.session.username = dbRes[0].username;
           req.session.fname = dbRes[0].fname;
@@ -32,7 +31,7 @@ router.post("/attemptlogin", function(req, res) {
           console.log(req.session);
           res.redirect("/travel");
         } else {
-          req.session.login_error = "Invalid password!";
+          req.session.login_error = "Invalid username or password!";
           res.redirect("/login");
         }
       });
