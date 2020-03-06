@@ -1,8 +1,8 @@
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database("database.db");
 
-function getUsersWithUsername(username, callback) {
-  db.all("SELECT * FROM Users WHERE username = ?", username, function(
+function getUsersWithUsername(usernamex, callback) {
+  db.all("SELECT * FROM Users WHERE username = ?", usernamex, function(
     err,
     results
   ) {
