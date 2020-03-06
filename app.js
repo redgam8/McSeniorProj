@@ -84,33 +84,6 @@ app.use("/signup", function(req,res,next) {
 
 });
 
-// Include Controllers
-//
-// - We define all of our routes inside our controllers, and include them in
-// our main app script.
-//
-// - This could present a problem in that we are defining our routes in
-// multiple files, and perhaps the same route could be defined in multiple
-// controller files.  Some versions of the MVC pattern actually define all
-// routes in a separate route file (or multiple route files organized by some
-// convention), and the routes reference controller methods.  This approach
-// is not better or worse strictly speaking, but it may be best for very
-// large/complex applications.
-//
-// - We define our routes in each controller file.  Each controller file will
-// be responsible for the functionality of an individual page of our
-// application (this is a common, reasonable way to split things up).  To make
-// sure that our controllers do not "step on each other's toes" by using the
-// same routes, we will follow a convention that controller routes should be
-// as follows: /controller_name[/action_name/url_parameters]
-// where the action_name is optional (the root/default method for rendering a
-// page), and url_parameters are optional (the action might have parameters or
-// not have parameters).
-//
-// - Note that because we have, app.use("/controllername", ... ) then routes
-// defined in the controller files will begin with "/controllername", rather
-// then repeating /controllername for each route defined in the file (this
-// also makes it easier to change, because it's defined once here).
 //
 // app.use("/home", require("./controllers/home"));
 app.use("/articles", require("./controllers/articles"));

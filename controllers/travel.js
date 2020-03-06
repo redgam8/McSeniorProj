@@ -11,55 +11,67 @@ router.get("/", function(req, res)
 // Create an article if the form has been submitted
 router.post("/submitroute", function(req, res)
 {
-	
-	
-	function addroutetodatabase (){
-		
-		
-		
-		
-	}
-	
-	
-	
+  function randomString(length, chars) {
+    var result = "";
+    for (var i = length; i > 0; --i)
+      result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  }
+  
+  function rideIdCheckLoop(dbResArr1) {
+    if (dbResArr1.length > 0) {
+      console.log("input ID: ", rideidx);
+      console.log("return ID: ", dbResArr1[0].rideid);
+      console.log("key duplicated");
+      ride = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
+      travel.getRouteID(rideidx, rideIdCheckLoop);
+    } else { 
 	
 	console.log("outputting contents of the body request");
 	console.log(req.body);
-	
-	console.log(req.session.userid,
+	travel.addRoute(rideidx,req.session.userid,
 					 req.body.ridetype, 
 					 req.body.startingloc, 
 					 req.body.startlong, 
 					 req.body.startlat, 
-					 req.body.startingloc, 
+					 req.body.endloc, 
 					 req.body.endlong, 
 					 req.body.endlat, 
 					 req.body.date,
-					 req.body.time);
-	
-	//valueAsNumber
-	
-	
-	
-	
- /* 
-	 travel.addRoute(req.session.userid,
-					req.body.ridetype, 
-					req.body.startlong, 
-					req.body.startlat, 
-					req.body.endlong, 
-					req.body.endlat, 
-					req.body.date,
-					req.body.time,
-					 test);
-	
-	
-	 */
-	
-	 res.redirect("/");
-	//userid	ridetype	startlong	startlat	endlong	endlat	status
+					 req.body.time, function(){
+					 
+					
+							 res.redirect("/"); 
+        }
+      );
+    }
+  }
 
-});
+  function rideIdCheck() {
+    return new Promise(function(resolve, reject) {
+      rideidx = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
+
+      travel.getRouteID(rideidx, rideIdCheckLoop);
+    });
+  }
+	
+	rideIdCheck().catch(function(err) {
+      req.session.signup_error = err;
+      res.redirect("/signup");
+    });
+	
+	
+	
+	
+	
+	
+	
+
+ });
+
+
+
+
 
 function test(){
 	//do something after

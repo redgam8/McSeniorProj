@@ -55,7 +55,7 @@ db.serialize(function() {
   //given userid	ridetype	startlong	startlat	endlong	endlat	status
 
   db.run(
-    "CREATE TABLE trips (rideid TEXT, userid TEXT, ridetype TEXT, startlong TEXT, startlat TEXT, endlong TEXT, endlat TEXT, status TEXT)"
+    "CREATE TABLE trips (rideid TEXT, userid TEXT, ridetype TEXT, startloc TEXT,startlong TEXT, startlat TEXT, endloc TEXT, endlong TEXT, endlat TEXT, status TEXT)"
   );
 
   // create an initial table of articles
