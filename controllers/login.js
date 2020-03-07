@@ -29,6 +29,17 @@ router.post("/attemptlogin", function(req, res) {
           req.session.phonenumber = dbRes[0].phonenumber;
 
           console.log(req.session);
+
+          //INSERT SOCKET IO
+          let io = req.app.get("io");
+          io.on('connection', function(socket){
+
+          	io.to(socket.id).emit("assigneduserID", {assigneduserID :req.session.userid});
+            console.log("Logged in with userID");
+
+          });
+          //INSERT SOCKET IO
+
           res.redirect("/travel");
         } else {
           req.session.login_error = "Invalid username or password!";

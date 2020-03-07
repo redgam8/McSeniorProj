@@ -109,3 +109,6 @@ app.get(/^(.+)$/, function(req,res) {
 
 // Start the server
 var server = app.listen(port, function() {console.log("Server listening...");})
+
+let io = require('socket.io')(server);
+app.set("io", io);

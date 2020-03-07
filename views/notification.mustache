@@ -1,0 +1,83 @@
+<html><head>
+<title>Notifications in HTML5</title>
+<style type="text/css">
+
+  button {
+  	display : block;
+  	margin : 0 auto;
+  	padding : 16px 20px;
+  	border : none;
+  	background : #2B3542;
+  	color : #FFF;
+  	border-radius : 20px;
+  	font-weight : bold;
+  	font-size : 20px;
+  }
+
+  button:hover {
+  	background : green;
+  	cursor : pointer;
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+
+<script type="text/javascript">
+
+</script>
+</head>
+<body onload="initNotifications()">
+	<button onclick="showNotification()">Show Desktop Notification</button>
+
+  <div id="showuserid" >
+
+    UserID:<span id="userID"></span> <br />
+
+  </div>
+
+  <script>
+  var socket = io()
+  socket.on("assigneduserID", function(auid)
+     {
+       $("#userID").html(auid.assigneduserID);
+
+       body = auid.assigneduserID;
+
+           });
+  </script>
+  <script>
+
+  var notificationsEnabled = false;
+
+  function initNotifications() {
+    if (window.Notification) {
+      Notification.requestPermission(function(permission) {
+        if (permission === 'granted') {
+          notificationsEnabled = true;
+        } else {
+          alert("You denied Notifications");
+        }
+      });
+    } else {
+      alert("Your browser doesn't support Notifications API");
+    }
+  }
+
+  function showNotification() {
+    if (notificationsEnabled) {
+      var notification = new Notification("TRUEPOOL CARPOOL", {
+        body,
+      //  body : 'You clicked on the button !',
+        //icon : 'TO DO'
+      });
+
+      setTimeout(function() { notification.close(); }, 5000);
+    } else {
+      alert("Notifications are disabled");
+    }
+
+  }
+  </script>
+
+</body></html>
