@@ -55,8 +55,11 @@ db.serialize(function() {
   //given userid	ridetype	startlong	startlat	endlong	endlat	status
 
   db.run(
-    "CREATE TABLE trips (rideid TEXT, userid TEXT, ridetype TEXT, startloc TEXT,startlong TEXT, startlat TEXT, endloc TEXT, endlong TEXT, endlat TEXT, status TEXT)"
+    "CREATE TABLE trips (rideid TEXT, userid TEXT, ridetype TEXT, startloc TEXT,startlong TEXT, startlat TEXT, endloc TEXT, endlong TEXT, endlat TEXT, date TEXT,time TEXT, triptime TEXT,status TEXT)"
   );
+  
+   db.run("INSERT INTO trips VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",[
+  "dggdtodm", "mem1", "offer", "Aurora Ct, Toronto, Ontario, Canada", "-79.3164285297417", "43.7931192128773", "Vaughan Blvd, Vaughan, Ontario, Canada", "-79.4646749996484", "43.8093500000245", "2020-03-07", "14:22", "1193", "active"]);
 
   // create an initial table of articles
   // db.run("DROP TABLE IF EXISTS Articles");
