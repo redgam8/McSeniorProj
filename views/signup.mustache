@@ -9,7 +9,7 @@
       <p style="color: red"><strong>{{ signup_error}}</strong></p>
       <form action="/signup/attemptsignup" method="post">
 
-        <input type="text" class="form-control" id="username-create" name="username" placeholder="Username" required autofocus pattern="[a-zA-Z0-9_]{0,}" title="Only characters, numbers and underscores are allowed"/><br />
+        <input type="text" class="form-control" id="username-create" name="username" placeholder="Username" required autofocus autocapitalize="off" pattern="[a-z0-9_]{0,}" title="Only lowercase characters, numbers and underscores are allowed"/><br />
 
         <!-- Secure password -->
         <!-- <input type="password" class="form-control" id="password-create" name="password" placeholder="Password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Minimum 8 characters long. At least 1 uppercase, 1 lowercase, and 1 number"/><br /> -->
