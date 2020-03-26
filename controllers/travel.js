@@ -16,10 +16,10 @@ router.post("/submitroute", function(req, res)
 		//build the route
 		route1 = "http://dev.virtualearth.net/REST/v1/Routes?wayPoint.1=";
 		//create logic to combine these two
-		route11 = "43.7931192128773,-79.3164285297417";
+		route11 = "";
 		route2= "&Waypoint.2=";
 		//create logic to combine these two
-		route22="48.7931192128773,-79.3164285297417";
+		route22="";
 		route3= "&key=";
 		route4="Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&o=json";
 		bingData = "";

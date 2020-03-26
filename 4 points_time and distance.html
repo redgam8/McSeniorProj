@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- Meta Tages-->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+<!-- BootStrap--> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  
+<!-- JQuery--> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+  
+</head>
+<body>
+<style> #myMap{display:none;} </style>
+<div class="container">	
+	Driver Start: 
+	<input id= "dSLat" type = "number" name="bla1" value = "43.593" > </input> 
+	<input id= "dSLong" type = "number"name="bla2" value = "-79.6406"> </input> 
+	<br><br>
+	Driver End: 
+	<input id= "dELat" type = "number" name="bla3" value = "43.2623"> </input> 
+	<input id= "dELong" type = "number" name="bla4" value = "-79.9156"> </input> 
+	<br><br>
+	Rider Start:
+	<input id= "rSLat" type = "number" name="bla5" value = "43.4692"> </input> 
+	<input id= "rSLong" type = "number" name="bla6" value = "-79.6981"> </input> 
+	<br><br>
+	Rider End: 
+	<input id= "rELat" type = "number" name="bla7" value = "43.5479"> </input> 
+	<input id= "rELong" type = "number" name="bla8" value = "-79.6637"> </input> 
+	<br><br>
+
+	<button id="routF" type="button" class="btn btn-primary">Route all</button>
+	<div id="output" :"2000></div>
+	<br> 
+	</div>
+	<div id='routeInfo'></div>
+
+  <div id="myMap" style=" width:800px;height:600px;" ></div>
+
+  <script>
+  function loadmap()
+    {
+	var map = new Microsoft.Maps.Map(document.getElementById("myMap"), {} );
+	var layer = new Microsoft.Maps.Layer();
+    
+	//Create an infobox at the center of the map but don't show it.	 
+   infobox = new Microsoft.Maps.Infobox(map.getCenter(), {visible: false});
+	//Assign the infobox to a map instance.
+	infobox.setMap(map);
+
+   // Defule location - 64 Melrose Ave N, Hamilton, Ontario.
+    var location_defult = new Microsoft.Maps.Location(43.252358, -79.830127);
+    var pushpin_defult = new Microsoft.Maps.Pushpin(location_defult, null);
+   //map.entities.push(pushpin_defult);
+	map.setView({center:location_defult,zoom:15});
+	
+ 
+  <!-- rout all button  -->
+	$("#routF").click(function(){routeALL();});
+ 
+<!-- Route all four locations -->
+ 	function routeALL(){
+		
+	lat1 = document.getElementById("dSLat").value;
+	long1 = document.getElementById("dSLong").value;	
+	lat2 = document.getElementById("dELat").value;
+	long2 = document.getElementById("dELong").value;	
+	lat3 = document.getElementById("rSLat").value;
+	long3 = document.getElementById("rSLong").value;	
+	lat4 = document.getElementById("rELat").value;
+	long4 = document.getElementById("rELong").value;	
+	
+	Microsoft.Maps.loadModule('Microsoft.Maps.Directions', () => {
+    var directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+ 
+    // Set Route Mode to driving
+    directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+    var waypoint1 =new Microsoft.Maps.Directions.Waypoint({ address: 'Driver Start', location: new Microsoft.Maps.Location(lat1, long1) });
+    var waypoint2 = new Microsoft.Maps.Directions.Waypoint({ address: 'Driver End', location: new Microsoft.Maps.Location(lat2, long2) });
+	var waypoint3 =new Microsoft.Maps.Directions.Waypoint({ address: 'Rider Start', location: new Microsoft.Maps.Location(lat3, long3) });
+    var waypoint4 = new Microsoft.Maps.Directions.Waypoint({ address: 'Rider End', location: new Microsoft.Maps.Location(lat4, long4) });
+    directionsManager.addWaypoint(waypoint1);
+	directionsManager.addWaypoint(waypoint3);
+	directionsManager.addWaypoint(waypoint4);
+    directionsManager.addWaypoint(waypoint2);
+	Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', directionsError);
+	Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', directionsUpdated);
+	directionsManager.calculateDirections()
+
+	function directionsUpdated(error) {
+            //Get the current route index.
+            var routeIdx = directionsManager.getRequestOptions().routeIndex;
+
+            //Get the distance of the route, rounded to 2 decimal places.
+            var distance = Math.round(error.routeSummary[routeIdx].distance * 100)/100;
+			console.log(distance);
+            //Get the distance units used to calculate the route.
+            var units = directionsManager.getRequestOptions().distanceUnit;
+            var distanceUnits = '';
+
+            if (units == Microsoft.Maps.Directions.DistanceUnit.km) {
+                distanceUnits = 'km'
+            } else {
+                //Must be in miles
+                distanceUnits = 'miles'
+            }
+
+            //Time is in seconds, convert to minutes and round off.
+            var time = Math.round(error.routeSummary[routeIdx].timeWithTraffic / 60);
+			console.log(time);
+            document.getElementById('routeInfo').innerHTML = 'Distance: ' + distance + ' ' + distanceUnits + '<br/>Time with Traffic: ' + time + ' minutes';
+        }
+		      function directionsError(error) {
+            alert('Error: ' + error.message + '\r\nResponse Code: ' + error.responseCode)
+        }
+ 
+});
+} }
+
+  </script>
+  <script src="https://www.bing.com/api/maps/mapcontrol?key=Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&callback=loadmap" async defer>
+  </script>
+</body>
+</html>

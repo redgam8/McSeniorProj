@@ -14,7 +14,15 @@ function addRoute(rideid, userid, ridetype, startloc, startlong, startlat, endlo
   });
 }
 
+function getMatchingRoute(ridetype,callback){
+  db.all("SELECT * FROM trips WHERE ridetype != ? AND status = ?", [ridetype,"active"],function(
+    err,
+    results
+  ) {
+    callback(results);
+  });
 
+}
 
 
 
@@ -44,7 +52,7 @@ function getRouteByID(rideid,callback){
 // Create a new article given a title, content and username
 
 
-module.exports = {addRoute,getRouteID,getRouteByID};
+module.exports = {getMatchingRoute,addRoute,getRouteID,getRouteByID};
 
 
    //db.run("CREATE TABLE Articles (ridetype TEXT, username TEXT, startinglocation TEXT, endlocation TEXT, status TEXT)");
