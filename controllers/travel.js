@@ -12,33 +12,7 @@ router.get("/", function(req, res)
 // Create an article if the form has been submitted
 router.post("/submitroute", function(req, res)
 {
-	function getBingRoute(x1,y1,x2,y2){
-		//build the route
-		route1 = "http://dev.virtualearth.net/REST/v1/Routes?wayPoint.1=";
-		//create logic to combine these two
-		route11 = "";
-		route2= "&Waypoint.2=";
-		//create logic to combine these two
-		route22="";
-		route3= "&key=";
-		route4="Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&o=json";
-		bingData = "";
-		finalroute = route1+route11+route2+route22+route3+route4;
-
-		Request.get(finalroute, (error, response, body) => {
-		if(error) {
-			return console.dir(error);
-		}
-		else{
-			//console.log(JSON.parse(body));
-			bingData = JSON.parse(body);
-			console.log("Function call:" + bingData.resourceSets[0].resources[0].travelDurationTraffic);
-			bingData = bingData.resourceSets[0].resources[0].travelDurationTraffic;
-			bingData = bingData.toString();
-			return bingData;
-		}
-		});		
-	}
+	
   
   function randomString(length, chars) {
     var result = "";
@@ -54,7 +28,8 @@ router.post("/submitroute", function(req, res)
       console.log("key duplicated");
       ride = randomString(8, "0123456789abcdefghijklmnopqrstuvwxyz");
       travel.getRouteID(rideidx, rideIdCheckLoop);
-    } else { 
+    } 
+	else { 
 	
 	console.log("outputting contents of the body request");
 	console.log(req.body);

@@ -27,16 +27,24 @@
 				</div>
 
 				<!-- hide this when we go live -->
-				start longitude: <span id="startlong" name="startlong"></span><br />
-				start latitude: <span id="startlat" name="startlat"></span><br /><br />
+				
+				<label for="startlong">start longitude</label>
+				<input id="startlong" name="startlong" type="text"><br>
+
+				<label for="startlat">start latitude</label>
+				<input id="startlat" name="startlat" type="text"><br>
 
 				<div id="endSearchContainer" class="form-group">
 				<label for="endLocationSearch">End Location</label>
 				<input name="endingloc" type="text" class="form-control" id='endSearchBox' placeholder="End Location" required autocomplete="on" >
 				</div>
+				
+				<!-- hide this when we go live -->
+				<label for="endlong">End longitude</label>
+				<input id="endlong" name="endlong" type="text"><br>
 
-				end longitude: <span id="endlong" name="endlong"></span><br />
-				end latitude: <span id="endlat" name="endlat"></span><br /><br />
+				<label for="endlat">End latitude</label>
+				<input id="endlat" name="endlat" type="text"><br>
 
 				<input type="date" id="date" name="date" placeholder="YYYY/MM/DD" required>
 				<input type="time" id="time" name="time" required><br /><br />
@@ -58,7 +66,6 @@
 	</div>
 </div>
 <script>
-
 	//console.log(Date());
 	n =  new Date();
 y = n.getFullYear();
@@ -146,8 +153,8 @@ else
 		map.entities.push(pushpin);
 		console.log("Lat:" + locationSuggestion.location.latitude);
 		console.log("Long:" + locationSuggestion.location.longitude);
-		$('#startlong').html(locationSuggestion.location.longitude);
-		$('#startlat').html(locationSuggestion.location.latitude);
+		$('#startlong').val(locationSuggestion.location.longitude);
+		$('#startlat').val(locationSuggestion.location.latitude);
 	}
 
 	function suggestionSelectedend(locationSuggestion) {
@@ -159,8 +166,8 @@ else
 		map.entities.push(pushpin);
 		console.log("eLat:" + locationSuggestion.location.latitude);
 		console.log("eLong:" + locationSuggestion.location.longitude);
-		$('#endlong').html(locationSuggestion.location.longitude);
-		$('#endlat').html(locationSuggestion.location.latitude);
+		$('#endlong').val(locationSuggestion.location.longitude);
+		$('#endlat').val(locationSuggestion.location.latitude);
 	}
 </script>
 <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7' async defer></script>
