@@ -29,7 +29,7 @@
 				<!-- hide this when we go live -->
 
 				<label for="startlong">start longitude</label>
-				<input id="startlong" name="startlong" type="text"><br />
+				<input id="startlong" name="startlong" type="text" required><br />
 
 				<label for="startlat">start latitude</label>
 				<input id="startlat" name="startlat" type="text"><br />
@@ -41,7 +41,7 @@
 
 				<!-- hide this when we go live -->
 				<label for="endlong">End longitude</label>
-				<input id="endlong" name="endlong" type="text"><br />
+				<input id="endlong" name="endlong" type="text" required><br />
 
 				<label for="endlat">End latitude</label>
 				<input id="endlat" name="endlat" type="text"><br /><br />
@@ -96,7 +96,7 @@ console.log(m2);
 console.log(d2);
 
 
-if (h=n.getHours()<12)
+if (h=n.getHours()<10)
 {
 
 h="0"+(n.getHours());
