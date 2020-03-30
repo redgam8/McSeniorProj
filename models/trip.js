@@ -6,6 +6,19 @@ function addRoute(rideid, userid, ridetype, startloc, startlong, startlat, endlo
  
   
   // add the route with the ID
+  db.run("INSERT INTO routes VALUES (?, ?, ?, ?, ?)",
+  [driverid, driverrideid, riderid, riderideid, "active"],
+  function(err){
+    callback(); console.log("trips.addRoute Called!");
+	console.log(rideid, userid, ridetype, startloc, startlong, startlat, endloc, endlong, endlat, date ,time, triptime, "active")
+  });
+}
+
+function addFullRoute(rideid, userid, ridetype, startloc, startlong, startlat, endloc, endlong, endlat, date ,time, triptime, callback){
+//rideid TEXT, userid TEXT, ridetype TEXT, startlong TEXT, startlat TEXT, endlong TEXT, endlat TEXT, time , status TEXT
+ 
+  
+  // add the route with the ID
   db.run("INSERT INTO trips VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   [rideid, userid, ridetype, startloc, startlong, startlat, endloc, endlong, endlat, date ,time, triptime, "active"],
   function(err){
@@ -13,8 +26,6 @@ function addRoute(rideid, userid, ridetype, startloc, startlong, startlat, endlo
 	console.log(rideid, userid, ridetype, startloc, startlong, startlat, endloc, endlong, endlat, date ,time, triptime, "active")
   });
 }
-
-
 
 
 
@@ -44,7 +55,7 @@ function getRouteByID(rideid,callback){
 // Create a new article given a title, content and username
 
 
-module.exports = {addRoute,getRouteID,getRouteByID};
+module.exports = {addFullRoute,addRoute,getRouteID,getRouteByID};
 
 
    //db.run("CREATE TABLE Articles (ridetype TEXT, username TEXT, startinglocation TEXT, endlocation TEXT, status TEXT)");

@@ -11,6 +11,7 @@ db.serialize(function() {
   // Create an initial table of users
   db.run("DROP TABLE IF EXISTS Users");
   db.run("DROP TABLE IF EXISTS trips");
+  db.run("DROP TABLE IF EXISTS routes");
   db.run(
     "CREATE TABLE Users (userid TEXT, username TEXT, passwordHash TEXT, fname TEXT, lname TEXT, email TEXT, phonenumber TEXT)"
   );
@@ -61,6 +62,12 @@ db.serialize(function() {
    db.run("INSERT INTO trips VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",[
   "dggdtodm", "mem1", "offer", "Aurora Ct, Toronto, Ontario, Canada", "-79.3164285297417", "43.7931192128773", "Vaughan Blvd, Vaughan, Ontario, Canada", "-79.4646749996484", "43.8093500000245", "2020-03-07", "14:22", "1193", "active"]);
 
+
+	db.run(
+		"CREATE TABLE routes (driverid TEXT, driverrideid TEXT, riderid TEXT, riderideid TEXT, status)"
+	  );
+	  
+	  
   // create an initial table of articles
   // db.run("DROP TABLE IF EXISTS Articles");
   // db.run("CREATE TABLE Articles (ridetype TEXT, username TEXT, startinglocation TEXT, endlocation TEXT, status TEXT)");

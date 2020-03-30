@@ -5,9 +5,9 @@ const trip = require('../models/trip.js');
 const travel = require('../models/travel.js');
 
 // Display the members page
-router.get("/", function(req, res)
+router.get("/", function (req, res)
 {
-	fastesttime=0;
+	fastesttime = 0;
 	//needs to pull data from the database
 	var fastestid;
 	//var testedid;
@@ -17,13 +17,14 @@ router.get("/", function(req, res)
 	var bingData;
 	var bingData2;
 
-	function catoutRideid(returnedResults){
+	function catoutRideid(returnedResults)
+	{
 
 		//assign the returned values into session
 
-		req.session.fastestid="";
+		req.session.fastestid = "";
 		req.session.bingData2 = "yte";
-		req.session.testedid="";
+		req.session.testedid = "";
 		req.session.fastesttime = 0;
 		req.session.rideid = returnedResults[0].rideid;
 		req.session.userid = returnedResults[0].userid;
@@ -51,12 +52,12 @@ router.get("/", function(req, res)
 		req.TPL.time = returnedResults[0].time;
 		req.TPL.triptime = returnedResults[0].triptime;
 		req.TPL.status = returnedResults[0].status;
-		console.log("1trip results: "+req.session);
-		console.log("1trip TPL results: "+JSON.stringify(req.TPL));
-		console.log("trip results: "+req.session);
-		console.log("trip TPL results: "+req.TPL.status);
+		console.log("1trip results: " + req.session);
+		console.log("1trip TPL results: " + JSON.stringify(req.TPL));
+		console.log("trip results: " + req.session);
+		console.log("trip TPL results: " + req.TPL.status);
 
-		  //Display error if there is, then reset it.
+		//Display error if there is, then reset it.
 		req.TPL.login_error = req.session.login_error;
 		req.TPL.login_ready = req.session.login_ready;
 		req.session.login_error = "";
@@ -65,48 +66,47 @@ router.get("/", function(req, res)
 		//console.log("what is returned" + travel.getMatchingRoute(req.session.ridetype));
 
 
-
-		 travel.getMatchingRoute(req.session.ridetype, CheckMatches);
+		travel.getMatchingRoute(req.session.ridetype, CheckMatches);
 
 		//req.TPL.startloc = req.session.startloc;
 		//res.render("trip", req.TPL)
 	};
 
-	 async function CheckMatches(opposingtrip){
-
-
-	 for (i=0;i<opposingtrip.length; i++)
+	async function CheckMatches(opposingtrip)
 	{
-		req.session.testedid = opposingtrip[i].rideid;
-		await console.log("await tested id  [" + i + "] = "+ opposingtrip[i].rideid);
-		if (req.session.ridetype == "offer")
-		{
-			point_a = req.session.startlat + "," + req.session.startlong;
-			point_b = req.session.endlat + "," + req.session.endlong;
-			point_c = opposingtrip[i].startlat  + "," +  opposingtrip[i].startlong;
-			point_d = opposingtrip[i].endlat  + "," +  opposingtrip[i].endlong;
-			route_a = point_a; //offer start
-			route_b = point_b; //offer end
-			route_c = point_c; //request start
-			route_d = point_d; //request end
 
-		}
-		else if (req.session.ridetype == "request")
+		for (i = 0; i < opposingtrip.length; i++)
 		{
-			point_a = opposingtrip[i].startlat  + "," +  opposingtrip[i].startlong;
-			point_c = req.session.startlat + "," + req.session.startlong;
-			point_d = req.session.endlat + "," + req.session.endlong;
-			point_b = opposingtrip[i].endlat  + "," +  opposingtrip[i].endlong;
-			route_a = point_a; //offer start
-			route_b = point_b; //offer end
-			route_c = point_c; //request start
-			route_d = point_d; //request end
-		}
+			req.session.testedid = opposingtrip[i].rideid;
+			await console.log("await tested id  [" + i + "] = " + opposingtrip[i].rideid);
+			if (req.session.ridetype == "offer")
+			{
+				point_a = req.session.startlat + "," + req.session.startlong;
+				point_b = req.session.endlat + "," + req.session.endlong;
+				point_c = opposingtrip[i].startlat + "," + opposingtrip[i].startlong;
+				point_d = opposingtrip[i].endlat + "," + opposingtrip[i].endlong;
+				route_a = point_a; //offer start
+				route_b = point_b; //offer end
+				route_c = point_c; //request start
+				route_d = point_d; //request end
 
-	/* 	await console.log("point_a = " + point_a);
-		await console.log("point_b = " + point_b);
-		await console.log("point_c = " + point_c);
-		await console.log("point_d = " + point_d); */
+			}
+			else if (req.session.ridetype == "request")
+			{
+				point_a = opposingtrip[i].startlat + "," + opposingtrip[i].startlong;
+				point_c = req.session.startlat + "," + req.session.startlong;
+				point_d = req.session.endlat + "," + req.session.endlong;
+				point_b = opposingtrip[i].endlat + "," + opposingtrip[i].endlong;
+				route_a = point_a; //offer start
+				route_b = point_b; //offer end
+				route_c = point_c; //request start
+				route_d = point_d; //request end
+			}
+
+			/* 	await console.log("point_a = " + point_a);
+			await console.log("point_b = " + point_b);
+			await console.log("point_c = " + point_c);
+			await console.log("point_d = " + point_d); */
 
 			route_a = point_a; //offer start
 			route_b = point_b; //offer end
@@ -115,26 +115,53 @@ router.get("/", function(req, res)
 
 			//create logic to combine these
 			route1 = "http://dev.virtualearth.net/REST/v1/Routes?wayPoint.1=";
-			route2= "&Waypoint.2=";
-			route3= "&Waypoint.3=";
-			route4= "&Waypoint.4=";
-			route5= "&key=";
-			route6="Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&o=json";
-			finalroute=route1 + route_a + route2 + route_c + route3 + route_d +route4 + route_b + route5 + route6;
+			route2 = "&Waypoint.2=";
+			route3 = "&Waypoint.3=";
+			route4 = "&Waypoint.4=";
+			route5 = "&key=";
+			route6 = "Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&o=json";
+			finalroute = route1 + route_a + route2 + route_c + route3 + route_d + route4 + route_b + route5 + route6;
 
 			// await console.log(finalroute);
-			req.session.bingData2 = await getroutebyApi(finalroute)
-			console.log("Time: "+ req.session.bingData2);
+			req.session.bingData2 = await getroutebyApi(finalroute);
+			//console.log("Time: "+ req.session.bingData2);
+			console.log("The tested id is: " + opposingtrip[i].rideid + "with the time of: " + req.session.bingData2);
+			checkfastest(req.session.bingData2, opposingtrip[i].rideid);
 		}
-			 console.log("bingdata2 = "+ req.session.bingData2);
-			res.render("trip", req.TPL);
 
-		};
+		//console.log("bingdata2 = "+ req.session.bingData2);
+		console.log("\n\n\n\n");
+		
+		console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of " + req.session.fastesttime);
+		//establish/create a socket here
+			
+		if (req.session.fastesttime < req.TPL.triptime * 1.1 )
+		{
+			console.log("Current trip time is " +req.TPL.triptime + ". \n110% of this is " + req.TPL.triptime * 1.1 + ".\n" +req.session.fastesttime +" is within 110%");
+			// this is where a match is found; regardless of who presses enter.
+			//Enter the data into the database routes table.
+		}
+		else{
+			
+			console.log("Current trip time is " +req.TPL.triptime + ". \n 110% of this is " + req.TPL.triptime * 1.1 + ".\n" +req.session.fastesttime +" is NOT within 110%");
+			console.log("Your ID: "+ req.session.rideid);
+			console.log("Best Match ID: "+ +req.session.fastesttime );
+			console.log("This just means that you suck and that the driver has exceeded 110% of his trip just to get you.");
+		}
+		
+	
+		res.render("trip", req.TPL);
 
-		function getroutebyApi(finalroute){
-			return new Promise(function(resolve,reject) {
-				Request.get(finalroute, function(error, response, body) {
-				if(error) {
+	};
+
+	function getroutebyApi(finalroute)
+	{
+		return new Promise(function (resolve, reject)
+		{
+			Request.get(finalroute, function (error, response, body)
+			{
+				if (error)
+				{
 					return console.dir(error);
 				}
 				//req.session.timelength=getBingRoute(a,b,c,d);
@@ -144,14 +171,46 @@ router.get("/", function(req, res)
 				// console.dir(bingData);
 
 				//return(bingData3);
-			})
-
-		});
+			}
+			)
 
 		}
+		);
 
+	}
 
+	function checkfastest(x, y)
+	{
 
-});
+		console.log("the full time to check is: " + x + " against TripID= " + y);
+		//console.log("TripID= "+y);
+		//console.log("req.session.fastesttime is set to: " + req.session.fastesttime);
+
+		if (req.session.fastesttime != 0)
+		{
+			//something has been set
+			if (x < req.session.fastesttime)
+			{
+				req.session.fastesttime = x;
+				req.session.fastesttripid = y;
+
+				console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
+				console.log("something is happening here");
+			}
+	
+		}
+		else
+		{
+			req.session.fastesttime = x;
+			req.session.fastesttripid = y;
+			console.log("something is happening here, no fastesttime set?");
+			console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
+		}
+		
+
+	}
+
+}
+);
 
 module.exports = router;
