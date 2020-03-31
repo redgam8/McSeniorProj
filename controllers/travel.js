@@ -60,7 +60,7 @@ router.post("/submitroute", function(req, res)
 	BingRouteTime = bingData.resourceSets[0].resources[0].travelDurationTraffic;
 	console.log("post return result: "+BingRouteTime);
 	
-	console.log("parsed content = " + rideidx,
+/* 	console.log("parsed content = " + rideidx,
 					req.session.userid,
 					req.body.ridetype, 
 					req.body.startingloc, 
@@ -71,7 +71,7 @@ router.post("/submitroute", function(req, res)
 					req.body.endlat, 
 					req.body.date,
 					req.body.time, 
-					BingRouteTime);
+					BingRouteTime); */
 					
 		travel.addRoute(rideidx,
 					req.session.userid,
@@ -90,7 +90,7 @@ router.post("/submitroute", function(req, res)
 							console.log("Session variables= " + JSON.stringify(req.session));
 							//console.log("Session variables= " + JSON.stringify(req.session.startingloc));
 					
-							 res.redirect("/trip"); 
+							 res.redirect("/search"); 
         } 
       );
 	

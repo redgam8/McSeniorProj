@@ -29,8 +29,8 @@ function createUser(
   phonenumber, callback
 ) {
   db.run(
-    "INSERT INTO Users VALUES (?,?,?,?,?,?,?)",
-    [userid, username, password, fname, lname, email, phonenumber],
+    "INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)",
+    [userid, username, password, fname, lname, email, phonenumber,""],
     function(err) {
       callback();
     }

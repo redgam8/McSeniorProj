@@ -88,6 +88,7 @@ app.use("/signup", function(req,res,next) {
 // app.use("/home", require("./controllers/home"));
 app.use("/travel", require("./controllers/travel"));
 app.use("/trip", require("./controllers/trip"));
+app.use("/search", require("./controllers/search"));
 app.use("/login", require("./controllers/login"));
 app.use("/signup", require("./controllers/signup"));
 

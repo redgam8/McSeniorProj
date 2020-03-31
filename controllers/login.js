@@ -35,7 +35,7 @@ router.post("/attemptlogin", function(req, res) {
           io.on('connection', function(socket){
 
           	io.to(socket.id).emit("assigneduserID", {assigneduserID :req.session.userid});
-            console.log("Logged in with userID");
+           // console.log("Logged in with userID");
 
           });
           //INSERT SOCKET IO

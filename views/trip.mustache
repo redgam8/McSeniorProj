@@ -3,6 +3,9 @@
 	<div class="leftcolumn">
 		<div class="card">
 			{{>notification}}
+			
+			Tee: <span id="question"></span>
+			<p><strong>{{ message }}</strong></p>
 			<h2>Active Trip Details</h2>
 			<p>This page is to create a connection to the application and wait for a successful match.</p>
 			<p><strong>Here are your trip details!</strong></p>
@@ -27,3 +30,14 @@
 </div>
 
 {{>footer}}
+
+ <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+	var socket = io();
+	 
+	  socket.on("deliverquestion", function(ques)
+      {
+        $("#question").html(ques);
+		body = auid.assigneduserID;
+      });
+</script>

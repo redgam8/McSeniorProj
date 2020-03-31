@@ -13,43 +13,47 @@ db.serialize(function() {
   db.run("DROP TABLE IF EXISTS trips");
   db.run("DROP TABLE IF EXISTS routes");
   db.run(
-    "CREATE TABLE Users (userid TEXT, username TEXT, passwordHash TEXT, fname TEXT, lname TEXT, email TEXT, phonenumber TEXT)"
+    "CREATE TABLE Users (userid TEXT, username TEXT, passwordHash TEXT, fname TEXT, lname TEXT, email TEXT, phonenumber TEXT, latestid TEXT)"
   );
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?)", [
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)", [
     "mem1",
     "mem1",
     passwordSha,
     "nameSample",
     "lastname26",
     "emailSample",
-    "123456789"
+    "123456789",
+	""
   ]);
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?)", [
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)", [
     "mem2",
     "mem2",
     passwordSha,
     "nameSample",
     "lastname24",
     "emailSample",
-    "123456789"
+    "123456789",
+	""
   ]);
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?)", [
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)", [
     "mem3",
     "edit1",
     passwordSha,
     "nameSample",
     "lastname23",
     "emailSample",
-    "123456789"
+    "123456789",
+	""
   ]);
-  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?)", [
+  db.run("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)", [
     "mem4",
     "edit2",
     passwordSha,
     "nameSample",
     "lastname2",
     "emailSample",
-    "123456789"
+    "123456789",
+	""
   ]);
 
   //create a table for the routes
