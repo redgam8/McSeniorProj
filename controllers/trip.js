@@ -8,6 +8,7 @@ var io = require('socket.io')(http);
 // Display the members page
 router.get("/", function (req, res)
 {
+	
 		/* req.session.fastestid
 		req.session.bingData2
 		req.session.testedid 
@@ -31,18 +32,18 @@ router.get("/", function (req, res)
 console.log(req.session.fastesttripid);
 
 
- res.render("search", req.TPL);
+ res.render("trip", req.TPL);
 
 let io = req.app.get("io");
           io.on('connection', function(socket){
-
-          	io.to(socket.id).emit("assigneduserID", {assigneduserID :req.session.userid});
+			 //socket.join('priv/John');
+          	io.to('req.session.rideid').emit("assigneduserID", {assigneduserID :req.session.userid});
             //console.log("Logged in with userID");
 			
-			 console.log("Question submitted: " + req.session.fastesttripid );
+			 console.log("Your Fastest ID is: " + req.session.fastesttripid );
    
     
-			io.to(socket.id).emit("deliverquestion", req.session.fastesttripid);
+			io.to('/priv/John').emit("deliverquestion", req.session.fastesttripid);
           });
 /* io.on('connection', function(socket){
 	 console.log("Question submitted: " + req.session.fastesttripid );

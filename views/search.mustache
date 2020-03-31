@@ -4,12 +4,12 @@
 		<div class="card">
 			{{>notification}}
 			
-			Fastest ID: <span id="question"></span>
+			Tee: <span id="question"></span>
 			<p><strong>{{ message }}</strong></p>
 			<h2>Active Trip Details</h2>
 			<p>This page is to create a connection to the application and wait for a successful match.</p>
 			<p><strong>Here are your trip details!</strong></p>
-			<p>Your Ride ID: <span id="rideid">{{ rideid }}</span></p>
+			<p>Your Ride ID: {{ rideid }}</p>
 		 <p>You are {{ ridetype }}ing a ride.</p>
 		<strong>Start: </strong>{{ startloc }}
 
@@ -33,13 +33,10 @@
 
  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-	 var room = document.getElementById("rideid").innerHTML;
-	 console.log("Room ID = "+room);
-	const  socket = io('priv/John');
-	//socket.join('priv/John');
+	var socket = io();
+	
 	  socket.on("deliverquestion", function(ques)
       {
         $("#question").html(ques);
-		body = auid.assigneduserID;
       });
 </script>
