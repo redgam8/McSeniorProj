@@ -8,11 +8,13 @@ var io = require('socket.io')(http);
 // Display the members page
 router.get("/", function (req, res)
 {
-	
-	
+
+
 	fastesttime = 0;
 	//needs to pull data from the database
 	var fastestid;
+	var latDiff;
+	var longDiff;
 	//var testedid;
 	//req.session.timelength = fastesttime;
 	travel.getRouteByID(req.session.rideid, catoutRideid);
@@ -81,96 +83,106 @@ router.get("/", function (req, res)
 		for (i = 0; i < opposingtrip.length; i++)
 		{
 			req.session.testedid = opposingtrip[i].rideid;
-			await console.log("await tested id  [" + i + "] = " + opposingtrip[i].rideid);
-			if (req.session.ridetype == "offer")
-			{
-				point_a = req.session.startlat + "," + req.session.startlong;
-				point_b = req.session.endlat + "," + req.session.endlong;
-				point_c = opposingtrip[i].startlat + "," + opposingtrip[i].startlong;
-				point_d = opposingtrip[i].endlat + "," + opposingtrip[i].endlong;
+
+			// Compare midpoints
+			latDiff = (parseFloat(req.session.startlat) + parseFloat(req.session.endlat) - parseFloat(opposingtrip[i].startlat) - parseFloat(opposingtrip[i].endlat))/2
+			longDiff = (parseFloat(req.session.startlong) + parseFloat(req.session.endlong) - parseFloat(opposingtrip[i].startlong) - parseFloat(opposingtrip[i].endlong))/2
+			console.log("Midpoints difference: ", Math.abs(latDiff) + Math.abs(longDiff) );
+
+			if ( Math.abs(latDiff) + Math.abs(longDiff) < 2 ) {
+
+				if (req.session.ridetype == "offer")
+				{
+					point_a = req.session.startlat + "," + req.session.startlong;
+					point_b = req.session.endlat + "," + req.session.endlong;
+					point_c = opposingtrip[i].startlat + "," + opposingtrip[i].startlong;
+					point_d = opposingtrip[i].endlat + "," + opposingtrip[i].endlong;
+					route_a = point_a; //offer start
+					route_b = point_b; //offer end
+					route_c = point_c; //request start
+					route_d = point_d; //request end
+
+				}
+				else if (req.session.ridetype == "request")
+				{
+					point_a = opposingtrip[i].startlat + "," + opposingtrip[i].startlong;
+					point_c = req.session.startlat + "," + req.session.startlong;
+					point_d = req.session.endlat + "," + req.session.endlong;
+					point_b = opposingtrip[i].endlat + "," + opposingtrip[i].endlong;
+					route_a = point_a; //offer start
+					route_b = point_b; //offer end
+					route_c = point_c; //request start
+					route_d = point_d; //request end
+				}
+
+				/* 	await console.log("point_a = " + point_a);
+				await console.log("point_b = " + point_b);
+				await console.log("point_c = " + point_c);
+				await console.log("point_d = " + point_d); */
+
 				route_a = point_a; //offer start
 				route_b = point_b; //offer end
 				route_c = point_c; //request start
 				route_d = point_d; //request end
 
+				//create logic to combine these
+				route1 = "http://dev.virtualearth.net/REST/v1/Routes?wayPoint.1=";
+				route2 = "&Waypoint.2=";
+				route3 = "&Waypoint.3=";
+				route4 = "&Waypoint.4=";
+				route5 = "&key=";
+				route6 = "Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&o=json";
+				finalroute = route1 + route_a + route2 + route_c + route3 + route_d + route4 + route_b + route5 + route6;
+
+				// await console.log(finalroute);
+				req.session.bingData2 = await getroutebyApi(finalroute);
+				//console.log("Time: "+ req.session.bingData2);
+				console.log("The tested id is: " + opposingtrip[i].rideid + " with the time of: " + req.session.bingData2);
+				checkfastest(req.session.bingData2, opposingtrip[i].rideid);
 			}
-			else if (req.session.ridetype == "request")
-			{
-				point_a = opposingtrip[i].startlat + "," + opposingtrip[i].startlong;
-				point_c = req.session.startlat + "," + req.session.startlong;
-				point_d = req.session.endlat + "," + req.session.endlong;
-				point_b = opposingtrip[i].endlat + "," + opposingtrip[i].endlong;
-				route_a = point_a; //offer start
-				route_b = point_b; //offer end
-				route_c = point_c; //request start
-				route_d = point_d; //request end
-			}
 
-			/* 	await console.log("point_a = " + point_a);
-			await console.log("point_b = " + point_b);
-			await console.log("point_c = " + point_c);
-			await console.log("point_d = " + point_d); */
 
-			route_a = point_a; //offer start
-			route_b = point_b; //offer end
-			route_c = point_c; //request start
-			route_d = point_d; //request end
-
-			//create logic to combine these
-			route1 = "http://dev.virtualearth.net/REST/v1/Routes?wayPoint.1=";
-			route2 = "&Waypoint.2=";
-			route3 = "&Waypoint.3=";
-			route4 = "&Waypoint.4=";
-			route5 = "&key=";
-			route6 = "Aj2GRDYK72ehSn2kZNlHiGmrB2JSs504JcX0hAEBhCdDL1TOpAjouqPKwrgbsKK7&o=json";
-			finalroute = route1 + route_a + route2 + route_c + route3 + route_d + route4 + route_b + route5 + route6;
-
-			// await console.log(finalroute);
-			req.session.bingData2 = await getroutebyApi(finalroute);
-			//console.log("Time: "+ req.session.bingData2);
-			console.log("The tested id is: " + opposingtrip[i].rideid + " with the time of: " + req.session.bingData2);
-			checkfastest(req.session.bingData2, opposingtrip[i].rideid);
 		}
 
 		//console.log("bingdata2 = "+ req.session.bingData2);
 		console.log("\n\n\n\n");
-		
+
 		console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of " + req.session.fastesttime);
 		//establish/create a socket here
-			
+
 		if (req.session.fastesttime < req.TPL.triptime * 1.1 )
 		{
 			console.log("Current trip time is " +req.TPL.triptime + ". \n110% of this is " + req.TPL.triptime * 1.1 + ".\n" +req.session.fastesttime +" is within 110%");
 			// this is where a match is found; regardless of who presses enter.
 			//Enter the data into the database routes table.
 			//Match is successful here.
-			
-			
-			
+
+
+
 		}
 		else{
-			
+
 			console.log("Current trip time is " +req.TPL.triptime + ". \n 110% of this is " + req.TPL.triptime * 1.1 + ".\n" +req.session.fastesttime +" is NOT within 110%");
 			console.log("Your ID: "+ req.session.rideid);
 			console.log("Best Match ID: "+  req.session.fastesttripid );
 			console.log("This just means that you suck and that the driver has exceeded 110% of his trip just to get you.");
 		}
-		
+
 		res.redirect("/trip");
-		
+
 		}
 		else{
-			
+
 			console.log("No Trips found");
 			res.redirect("trip");
 		}
-		
-		
-		
-		
-		
-		
-	
+
+
+
+
+
+
+
 	};
 
 	function getroutebyApi(finalroute)
@@ -216,7 +228,7 @@ router.get("/", function (req, res)
 				console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
 				console.log("something is happening here");
 			}
-	
+
 		}
 		else
 		{
@@ -225,10 +237,10 @@ router.get("/", function (req, res)
 			console.log("something is happening here, no fastesttime set?");
 			console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
 		}
-		
+
 
 	}
-	
+
 }
 );
 
