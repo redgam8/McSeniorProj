@@ -15,6 +15,7 @@ router.get("/", function (req, res)
 	var fastestid;
 	var latDiff;
 	var longDiff;
+	var counter=0;
 	//var testedid;
 	//req.session.timelength = fastesttime;
 	travel.getRouteByID(req.session.rideid, catoutRideid);
@@ -90,6 +91,7 @@ router.get("/", function (req, res)
 			console.log("Midpoints difference: ", Math.abs(latDiff) + Math.abs(longDiff) );
 
 			if ( Math.abs(latDiff) + Math.abs(longDiff) < 2 ) {
+				counter = counter +1;
 
 				if (req.session.ridetype == "offer")
 				{
@@ -142,6 +144,11 @@ router.get("/", function (req, res)
 			}
 
 
+		}
+
+		if counter == 0 {
+				console.log("No Trips found nearby lat/long");
+				res.redirect("trip");
 		}
 
 		//console.log("bingdata2 = "+ req.session.bingData2);
