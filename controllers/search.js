@@ -146,16 +146,24 @@ router.get("/", function (req, res)
 
 		}
 
-		if counter == 0 {
-				console.log("No Trips found nearby lat/long");
-				res.redirect("trip");
-		}
+//		if counter == 0 {
+//				console.log("No Trips found nearby lat/long");
+//				res.redirect("trip");
+//		}
 
 		//console.log("bingdata2 = "+ req.session.bingData2);
 		console.log("\n\n\n\n");
 
 		console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of " + req.session.fastesttime);
 		//establish/create a socket here
+		let io = req.app.get("io");
+		io.on('connection', function(socket){
+
+			io.to(socket.id).emit("fastesttrip", {fastesttripid :req.session.fastesttripid});
+		 console.log("fastesttrip sent to client");
+
+
+		});
 
 		if (req.session.fastesttime < req.TPL.triptime * 1.1 )
 		{

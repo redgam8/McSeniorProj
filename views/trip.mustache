@@ -3,8 +3,8 @@
 	<div class="leftcolumn">
 		<div class="card">
 			{{>notification}}
-			
-			Fastest ID: <span id="question"></span>
+
+			Fastest ID: <span id="fastestid"></span>
 			<p><strong>{{ message }}</strong></p>
 			<h2>Active Trip Details</h2>
 			<p>This page is to create a connection to the application and wait for a successful match.</p>
@@ -32,14 +32,19 @@
 {{>footer}}
 
  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 <script>
 	 var room = document.getElementById("rideid").innerHTML;
-	 console.log("Room ID = "+room);
-	const  socket = io('priv/John');
-	//socket.join('priv/John');
-	  socket.on("deliverquestion", function(ques)
-      {
-        $("#question").html(ques);
-		body = auid.assigneduserID;
-      });
+	// console.log("Room ID = "+room);
+//	//socket.join('priv/John');
+//	  socket.on("deliverquestion", function(ques)
+  //    {
+      //  $("#question").html(ques);
+	  //    });
+
+			socket.on("fastesttrip", function(ftrip)
+		     {
+		       $("#fastestid").html(ftrip.fastesttripid);
+					
+		           });
 </script>
