@@ -4,7 +4,6 @@ var http = require('http').Server(express);
 var Request = require("request");
 const trip = require('../models/trip.js');
 const travel = require('../models/travel.js');
-const user = require("../models/user.js");
 var io = require('socket.io')(http);
 // Display the members page
 router.get("/", function (req, res)
@@ -141,50 +140,50 @@ router.get("/", function (req, res)
 				req.session.bingData2 = await getroutebyApi(finalroute);
 				//console.log("Time: "+ req.session.bingData2);
 				console.log("The tested id is: " + opposingtrip[i].rideid + " with the time of: " + req.session.bingData2);
-				checkfastest(req.session.bingData2, opposingtrip[i]);
+				checkfastest(req.session.bingData2, opposingtrip[i].rideid);
 			}
 
 
 		}
 
-//		if counter == 0 {
-//				console.log("No Trips found nearby lat/long");
-//				res.redirect("trip");
-//		}
-
+		if (counter == 0) {
+				console.log("No Trips found nearby lat/long");
+				req.session.matchFound == false;
+				res.redirect("trip");
+				
+		}
+		
+		else{
 		//console.log("bingdata2 = "+ req.session.bingData2);
 		console.log("\n\n\n\n");
 
 		console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of " + req.session.fastesttime);
 		//establish/create a socket here
-		let io = req.app.get("io");
-		io.on('connection', function(socket){
 
-			io.to(socket.id).emit("fastesttrip", {fastesttripid: req.session.fastesttripid, fastestfname: req.session.fname, fastestlname: req.session.lname, fastestphonenumber :req.session.phonenumber});
-		 console.log("fastesttrip sent to client");
-		 //console.log(req.session.phonenumber);
-
-		});
-
-		if (req.session.fastesttime < req.TPL.triptime * 1.1 )
-		{
-			console.log("Current trip time is " +req.TPL.triptime + ". \n110% of this is " + req.TPL.triptime * 1.1 + ".\n" +req.session.fastesttime +" is within 110%");
-			// this is where a match is found; regardless of who presses enter.
-			//Enter the data into the database routes table.
-			//Match is successful here.
+			if (req.session.fastesttime < req.TPL.triptime * 1.3 )
+			{
+				console.log("Current trip time is " +req.TPL.triptime + ". \n110% of this is " + req.TPL.triptime * 1.3 + ".\n" +req.session.fastesttime +" is within 110%");
+				// this is where a match is found; regardless of who presses enter.
+				//Enter the data into the database routes table.
+				//Match is successful here.
+				req.session.matchFound = true;
+				res.redirect("trip");
 
 
-
-		}
-		else{
-
-			console.log("Current trip time is " +req.TPL.triptime + ". \n 110% of this is " + req.TPL.triptime * 1.1 + ".\n" +req.session.fastesttime +" is NOT within 110%");
-			console.log("Your ID: "+ req.session.rideid);
-			console.log("Best Match ID: "+  req.session.fastesttripid );
-			console.log("This just means that you suck and that the driver has exceeded 110% of his trip just to get you.");
+			}
+			else{
+				req.session.matchFound = false;
+				console.log("Current trip time is " +req.TPL.triptime + ". \n 110% of this is " + req.TPL.triptime * 1.3 + ".\n" +req.session.fastesttime +" is NOT within 110%");
+				console.log("Your ID: "+ req.session.rideid);
+				console.log("Best Match ID: "+  req.session.fastesttripid );
+				console.log("This just means that you suck and that the driver has exceeded 110% of his trip just to get you.");
+				res.redirect("trip");
+			}
+			
+			
 		}
 
-		res.redirect("/trip");
+	
 
 		}
 		else{
@@ -239,25 +238,17 @@ router.get("/", function (req, res)
 			if (x < req.session.fastesttime)
 			{
 				req.session.fastesttime = x;
-				req.session.fastesttripid = y.rideid;
+				req.session.fastesttripid = y;
 
 				console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
 				console.log("something is happening here");
-
-				user.getidUserid(y.userid, setuserdetails);
-				function setuserdetails(dbinfo)
-				{
-					req.session.fname = setuserdetails[0].fname;
-					req.session.lname = setuserdetails[0].lname;
-					req.session.phonenumber = setuserdetails[0].phonenumber;
-				}
 			}
 
 		}
 		else
 		{
 			req.session.fastesttime = x;
-			req.session.fastesttripid = y.rideid;
+			req.session.fastesttripid = y;
 			console.log("something is happening here, no fastesttime set?");
 			console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
 		}

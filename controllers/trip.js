@@ -3,64 +3,69 @@ var router = express.Router();
 var http = require('http').Server(express);
 var Request = require("request");
 const trip = require('../models/trip.js');
+const user = require('../models/user.js');
 const travel = require('../models/travel.js');
 var io = require('socket.io')(http);
+const fs = require('fs');
 // Display the members page
 router.get("/", function (req, res)
 {
-
-	/* req.session.fastestid
-	req.session.bingData2
-	req.session.testedid
-	req.session.fastesttime */
-
-	req.TPL.rideid = req.session.rideid
-		req.TPL.userid = req.session.userid
-		req.TPL.ridetype = req.session.ridetype
-		req.TPL.startloc = req.session.startloc
-		req.TPL.startlong = req.session.startlong
-		req.TPL.startlat = req.session.startlat
-		req.TPL.endloc = req.session.endloc
-		req.TPL.endlong = req.session.endlong
-		req.TPL.endlat = req.session.endlat
-		req.TPL.date = req.session.date
-		req.TPL.time = req.session.time
-		req.TPL.triptime = req.session.triptime
-		req.TPL.status = req.session.status
-
-		console.log(req.session.fastesttripid);
-
-	res.render("trip", req.TPL);
-
-	let io = req.app.get("io");
-	io.on('connection', function (socket)
-	{
-		//socket.join('priv/John');
-		io.to('req.session.rideid').emit("assigneduserID",
-		{
-			assigneduserID: req.session.userid
+	
+		/* req.session.fastestid
+		req.session.bingData2
+		req.session.testedid 
+		req.session.fastesttime */ 
+		//req.TPL.message = "";
+		req.TPL.rideid = req.session.rideid;
+		req.TPL.userid = req.session.userid;
+		req.TPL.ridetype = req.session.ridetype;
+		req.TPL.startloc = req.session.startloc;
+		req.TPL.startlong = req.session.startlong;
+		req.TPL.startlat = req.session.startlat;
+		req.TPL.endloc = req.session.endloc;
+		req.TPL.endlong = req.session.endlong ;
+		req.TPL.endlat = req.session.endlat;
+		req.TPL.date = req.session.date ;
+		req.TPL.time = req.session.time; 
+		req.TPL.triptime = req.session.triptime;
+		req.TPL.status = req.session.status ;
+		console.log(req.session.matchFound);
+		//req.TPL.message = req.session.message;
+		
+		if  (req.session.matchFound == true){
+			travel.getRouteID(req.session.fastesttripid,getinfo);
+			
 		}
-		);
-		//console.log("Logged in with userID");
+		
+		else {
+			
+			req.TPL.message="No match found yet!";
+			res.render("trip", req.TPL);
+		}
+		
+		function getinfo(data){
+			
+			 user.getidUserid(data[0].userid,displayall);
+			
+			
+			
+		}
 
-		console.log("Your Fastest ID is: " + req.session.fastesttripid);
+		function displayall(data){
+			console.log(data[0]);
+			console.log(data[0].rideid);
+			console.log(data[0].fname);
+			
+			req.TPL.fastestname = data[0].fname + " " + data[0].lname;
+			req.TPL.fastestphonenumber = data[0].phonenumber;
+			req.TPL.message = "Your match has been found!\n";
+			req.TPL.message2 = "Matched Name: " + req.TPL.fastestname;
+			req.TPL.message3 = "Phone Number"+ req.TPL.fastestphonenumber;
+			console.log("you got here");
+			 res.render("trip", req.TPL);
 
-		io.to('/priv/John').emit("deliverquestion", req.session.fastesttripid);
-	}
-	);
-	/* io.on('connection', function(socket){
-	console.log("Question submitted: " + req.session.fastesttripid );
+		}
 
-	// Broadcast the question to all the students
-	socket.broadcast.emit("deliverquestion", req.session.fastesttripid);
-	socket.on("submitquestion", function()
-{
-
-	// Make sure we've received the question OK
-
-
-	}); */
-
-}
-);
+  
+});
 module.exports = router;

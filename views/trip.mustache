@@ -4,6 +4,8 @@
 		<div class="card">
 
 			<p><strong>{{ message }}</strong></p>
+			<p><strong>{{ message2 }}</strong></p>
+			<p><strong>{{ message3 }}</strong></p>
 			<h2>Active Trip Details</h2>
 			<p>This page is to create a connection to the application and wait for a successful match.</p>
 			<p><strong>Here are your trip details!</strong></p>
@@ -11,11 +13,7 @@
 			<p>Your Ride ID: <span id="rideid">{{ rideid }}</span></p>
 		 <p>You are {{ ridetype }}ing a ride.</p>
 
-		 <p><strong>You are matched with:</strong></p>
-	   <p>Fastest ID: <span id="fastestid"></span></p>
-		 <p>First Name: <span id="fname"></span></p>
-		 <p>Last Name: <span id="lname"></span></p>
-		 <p>Phone Number: <span id="phonenumber"></span></p>
+
 
 		<strong>Start: </strong>{{ startloc }}
 
@@ -37,23 +35,3 @@
 
 {{>footer}}
 
- <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-<script>
-	 var room = document.getElementById("rideid").innerHTML;
-	// console.log("Room ID = "+room);
-//	//socket.join('priv/John');
-//	  socket.on("deliverquestion", function(ques)
-  //    {
-      //  $("#question").html(ques);
-	  //    });
-		var socket = io()
-			socket.on("fastesttrip", function(ftrip)
-		     {
-		       $("#fastestid").html(ftrip.fastesttripid);
-					 $("#fname").html(ftrip.fastestfname);
-					 $("#lname").html(ftrip.fastestlname);
-					 $("#phonenumber").html(ftrip.fastestphonenumber);
-
-		           });
-</script>
