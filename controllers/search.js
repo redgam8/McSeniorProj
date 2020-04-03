@@ -4,6 +4,7 @@ var http = require('http').Server(express);
 var Request = require("request");
 const trip = require('../models/trip.js');
 const travel = require('../models/travel.js');
+const user = require("../models/user.js");
 var io = require('socket.io')(http);
 // Display the members page
 router.get("/", function (req, res)
@@ -140,7 +141,7 @@ router.get("/", function (req, res)
 				req.session.bingData2 = await getroutebyApi(finalroute);
 				//console.log("Time: "+ req.session.bingData2);
 				console.log("The tested id is: " + opposingtrip[i].rideid + " with the time of: " + req.session.bingData2);
-				checkfastest(req.session.bingData2, opposingtrip[i].rideid);
+				checkfastest(req.session.bingData2, opposingtrip[i]);
 			}
 
 
@@ -159,9 +160,9 @@ router.get("/", function (req, res)
 		let io = req.app.get("io");
 		io.on('connection', function(socket){
 
-			io.to(socket.id).emit("fastesttrip", {fastesttripid :req.session.fastesttripid});
+			io.to(socket.id).emit("fastesttrip", {fastesttripid: req.session.fastesttripid, fastestfname: req.session.fname, fastestlname: req.session.lname, fastestphonenumber :req.session.phonenumber});
 		 console.log("fastesttrip sent to client");
-
+		 //console.log(req.session.phonenumber);
 
 		});
 
@@ -238,17 +239,25 @@ router.get("/", function (req, res)
 			if (x < req.session.fastesttime)
 			{
 				req.session.fastesttime = x;
-				req.session.fastesttripid = y;
+				req.session.fastesttripid = y.rideid;
 
 				console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
 				console.log("something is happening here");
+
+				user.getidUserid(y.userid, setuserdetails);
+				function setuserdetails(dbinfo)
+				{
+					req.session.fname = setuserdetails[0].fname;
+					req.session.lname = setuserdetails[0].lname;
+					req.session.phonenumber = setuserdetails[0].phonenumber;
+				}
 			}
 
 		}
 		else
 		{
 			req.session.fastesttime = x;
-			req.session.fastesttripid = y;
+			req.session.fastesttripid = y.rideid;
 			console.log("something is happening here, no fastesttime set?");
 			console.log("Fastest trip id is: " + req.session.fastesttripid + " with the time of" + req.session.fastesttime);
 		}
