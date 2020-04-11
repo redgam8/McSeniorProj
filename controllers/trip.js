@@ -60,7 +60,7 @@ router.get("/", function (req, res)
 			req.TPL.fastestphonenumber = data[0].phonenumber;
 			req.TPL.message = "Your match has been found!\n";
 			req.TPL.message2 = "Matched Name: " + req.TPL.fastestname;
-			req.TPL.message3 = "Phone Number"+ req.TPL.fastestphonenumber;
+			req.TPL.message3 = "Phone Number: "+ req.TPL.fastestphonenumber;
 			console.log("you got here");
 			 res.render("trip", req.TPL);
 
